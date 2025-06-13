@@ -3,7 +3,7 @@ import AdminDashboard from '../pages/Admin/Dashboard';
 
 const AdminRoutes = () => (
   <Routes>
-    <Route path="/dashboard" element={<AdminDashboard />} />
+    <Route path="dashboard" element={<AdminDashboard />} />
     {/* Other admin-specific routes */}
   </Routes>
 );

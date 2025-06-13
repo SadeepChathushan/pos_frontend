@@ -1,84 +1,162 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {
+  LayoutDashboard,
+  FileText,
+  Package,
+  ShoppingCart,
+  ClipboardList,
+  Boxes,
+  Repeat,
+  Settings,
+  LogOut,
+  Users,
+  UserCog,
+  ClipboardCheck,
+  BarChart2,
+} from "lucide-react";
 
 const Sidebar = ({ userRole }) => {
   return (
-    <div className="w-64 bg-[#2D3E50] text-white p-6 flex flex-col">
-      <h2 className="text-2xl font-semibold mb-12 text-center">POS System</h2>
+    <div className="flex flex-col w-64 min-h-screen text-white">
+      {/* Top title bar */}
+      <div className="bg-[#1C3F50] py-4 px-4 text-xl font-semibold text-center">
+        POS System
+      </div>
 
-      <nav className="flex flex-col space-y-6">
-        {/* Common Links for All Users */}
-        <Link
-          to="/dashboard"
-          className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-        >
-          <span className="text-lg">Dashboard</span>
-        </Link>
+      {/* Sidebar content */}
+      <div className="flex-1 bg-gradient-to-b from-[#2B576D] to-[#1C3F50] p-6">
+        <nav className="flex flex-col space-y-4">
+          {/* Role Based Links */}
+          {userRole === "cashier" && (
+            <>
+              <Link
+                to="/cashier/dashboard"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <LayoutDashboard size={20} />
+                <span className="text-lg">Dashboard</span>
+              </Link>
+              <Link
+                to="/cashier/billing"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <FileText size={20} />
+                <span className="text-lg">Billing</span>
+              </Link>
+              <Link
+                to="/cashier/customers"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <ShoppingCart size={20} />
+                <span className="text-lg">Customers</span>
+              </Link>
+            </>
+          )}
 
-        {/* Role-Based Links */}
-        {userRole === "cashier" && (
-          <>
-            <Link
-              to="/cashier/dashboard"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-            >
-              <span className="text-lg">Cashier Dashboard</span>
-            </Link>
-            <Link
-              to="/cashier/transactions"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-            >
-              <span className="text-lg">Transactions</span>
-            </Link>
-            <Link
-              to="/cashier/sales"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-            >
-              <span className="text-lg">Sales</span>
-            </Link>
-            <Link
-              to="/cashier/reports"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-            >
-              <span className="text-lg">Reports</span>
-            </Link>
-          </>
-        )}
+          {userRole === "admin" && (
+            <>
+              <Link
+                to="admin/dashboard"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <LayoutDashboard size={20} />
+                <span className="text-lg">Dashboard</span>
+              </Link>
+              <Link
+                to="/admin/employees"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <UserCog size={20} />
+                <span className="text-lg">Employees</span>
+              </Link>
+              <Link
+                to="/admin/user-management"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <Users size={20} />
+                <span className="text-lg">User Management</span>
+              </Link>
+              
+              <Link
+                to="/admin/attendance"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <Users size={20} />
+                <span className="text-lg">Attendance</span>
+              </Link>
+            </>
+          )}
 
-        {userRole === "admin" && (
-          <>
-            <Link
-              to="/admin"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-            >
-              <span className="text-lg">Admin Panel</span>
-            </Link>
-            <Link
-              to="/admin/manage-users"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
-            >
-              <span className="text-lg">Manage Users</span>
-            </Link>
-          </>
-        )}
+          {userRole === "stockkeeper" && (
+            <>
+              <Link
+                to="/stockkeeper"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <ClipboardCheck size={20} />
+                <span className="text-lg">Dashboard</span>
+              </Link>
+              <Link
+                to="/stockkeeper/manage-stock"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <Boxes size={20} />
+                <span className="text-lg">Purchase Order</span>
+              </Link>
+              <Link
+            to="/random-delivery"
+            className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+          >
+            <Package size={20} />
+            <span className="text-lg">Random delivery</span>
+          </Link>
+          <Link
+            to="/grn"
+            className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+          >
+            <ClipboardList size={20} />
+            <span className="text-lg">GRN</span>
+          </Link>
+          <Link
+            to="/inventory"
+            className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+          >
+            <Boxes size={20} />
+            <span className="text-lg">Inventory</span>
+          </Link>
+          <Link
+            to="/return-expire"
+            className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+          >
+            <Repeat size={20} />
+            <span className="text-lg">Return & Expire</span>
+          </Link>
+            </>
+          )}
 
-        {userRole === "stockkeeper" && (
-          <>
+          {/* Static Links */}
+          
+          
+
+          <div className="pt-6 mt-auto space-y-4 border-t border-white/30">
             <Link
-              to="/stockkeeper"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
+              to="/settings"
+              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
             >
-              <span className="text-lg">Stock Overview</span>
+              <Settings size={20} />
+              <span className="text-lg">Settings</span>
             </Link>
             <Link
-              to="/stockkeeper/manage-stock"
-              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-2"
+              to="/logout"
+              className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
             >
-              <span className="text-lg">Manage Stock</span>
+              <LogOut size={20} />
+              <span className="text-lg">Log Out</span>
             </Link>
-          </>
-        )}
-      </nav>
+          </div>
+        </nav>
+      </div>
     </div>
   );
 };
