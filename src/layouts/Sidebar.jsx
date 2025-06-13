@@ -91,14 +91,14 @@ const Sidebar = ({ userRole }) => {
           {userRole === "stockkeeper" && (
             <>
               <Link
-                to="/stockkeeper"
+                to="/stockkeeper/dashboard"
                 className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
               >
                 <ClipboardCheck size={20} />
                 <span className="text-lg">Dashboard</span>
               </Link>
               <Link
-                to="/stockkeeper/manage-stock"
+                to="/stockkeeper/purchaseorder"
                 className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
               >
                 <Boxes size={20} />
