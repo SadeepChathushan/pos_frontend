@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import AppLayout from "./layouts/AppLayout";
@@ -11,25 +11,30 @@ import StockKeeperRoutes from "./routes/StockKeeperRoutes";
 import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
-  // const [userRole, setUserRole] = useState("admin"); // Hardcoded role for testing
-  const userRole = "admin";
+  const [userRole, setUserRole] = useState(null); // null initially (unauthenticated)
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Protected Routes */}
-        <Route element={<PrivateRoute allowedRoles={["admin", "cashier", "stockkeeper"]} userRole={userRole} />}>
+        <Route path="/login" element={<Login setUserRole={setUserRole} />} />
+
+        <Route
+          element={<PrivateRoute allowedRoles={["admin", "cashier", "stockkeeper"]} userRole={userRole} />}
+        >
           <Route element={<AppLayout userRole={userRole} />}>
-            {/* Role-based Routes */}
-            <Route path="/cashier/*" element={<CashierRoutes />} />
-            <Route path="/admin/*" element={<AdminRoutes />} />
-            <Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
+            <Route path="/admin/*" element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="/cashier/*" element={<Navigate to="/cashier/dashboard" replace />} />
+            <Route path="/stockkeeper/*" element={<Navigate to="/stockkeeper/stock-overview" replace />} />
+
+            {/* Routes */}
+            <Route path="/admin/dashboard/*" element={<AdminRoutes />} />
+            <Route path="/cashier/dashboard/*" element={<CashierRoutes />} />
+            <Route path="/stockkeeper/stock-overview/*" element={<StockKeeperRoutes />} />
           </Route>
         </Route>
 
-        {/* Catch-all route for 404 */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
