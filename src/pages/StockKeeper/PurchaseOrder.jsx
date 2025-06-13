@@ -18,7 +18,7 @@ export default function PurchaseOrder() {
   );
 
   return (
-    <div className="min-h-screen bg-[#C7DCE0] p-6">
+    <div >
       {/* Top bar */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-gray-800">Purchase Order</h1>
