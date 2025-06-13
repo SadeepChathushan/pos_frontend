@@ -1,11 +1,14 @@
 // src/pages/Login.jsx
 
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import bgImage from "../assets/bg_image.jpg";
+import logo from "../assets/logo.png";
 
-function Login({ setUserRole }) {
+export default function Login({ setUserRole }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
@@ -13,12 +16,11 @@ function Login({ setUserRole }) {
 
     // Hardcoded users
     const users = {
-      admin: { email: "admin@example.com", password: "admin123" },
+      admin:   { email: "admin@example.com",   password: "admin123"   },
       cashier: { email: "cashier@example.com", password: "cashier123" },
       stockkeeper: { email: "stock@example.com", password: "stock123" },
     };
 
-    // Match role by email & password
     for (const [role, creds] of Object.entries(users)) {
       if (email === creds.email && password === creds.password) {
         setUserRole(role);
@@ -31,46 +33,92 @@ function Login({ setUserRole }) {
   };
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen overflow-hidden">
-      <div className="absolute inset-0 scale-105 bg-center bg-cover filter blur-sm"></div>
+    <div
+      className="relative flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: `url(${bgImage})` }}
+    >
+      {/* dark overlay */}
+      <div className="absolute inset-0 bg-black opacity-80" />
 
-      <div className="relative z-10 flex flex-col items-center justify-center w-full p-10 md:flex-row">
-        <div className="p-6 mb-10 text-center text-white md:w-1/2 md:mb-0 md:text-left">
-          <h1 className="font-bold text-8xl">WELCOME<br />ZIPMA<br />SALON</h1>
-          <p className="mt-4 italic text-gray-300">Where Style Meets Simplicity</p>
+      <div className="relative z-10 flex flex-col items-center justify-between w-full max-w-5xl p-6 space-y-8 md:space-y-0 md:flex-row">
+        {/* left panel */}
+        <div className="flex flex-col items-center text-center md:items-start md:text-left md:w-1/2">
+          <img src={logo} alt="Logo" className="w-64 md:w-80 mb-1" />
+          <h1 className="text-4xl font-serif italic text-white mt-3">
+            WELCOME
+            POS SYSTEM
+          </h1>
+           <p className="mt-3 text-lg italic text-gray-300">
+    Empowering Retail, One Transaction at a Time
+  </p>
         </div>
 
-        <div className="w-full p-6 bg-black bg-opacity-50 rounded-lg md:w-1/2">
-          <h2 className="mb-6 text-2xl font-semibold text-white">LOGIN</h2>
-          <form onSubmit={handleLogin}>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm text-gray-200">Email</label>
+        {/* right panel */}
+        <div className="w-full md:w-1/2 p-8 ">
+          <h2 className="mb-6 text-3xl font-bold text-white text-center">LOGIN</h2>
+          <form onSubmit={handleLogin} className="space-y-4">
+            
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-200">
+                E mail Address
+              </label>
               <input
                 type="email"
-                className="w-full px-4 py-2 text-black bg-gray-200 rounded-md"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="w-full px-4 py-2 bg-[#1C3F50] text-white rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
               />
             </div>
-            <div className="mb-4">
-              <label className="block mb-2 text-sm text-gray-200">Password</label>
+
+            
+            <div>
+              <label className="block mb-1 text-sm font-medium text-gray-200">
+                Password
+              </label>
               <input
                 type="password"
-                className="w-full px-4 py-2 text-black bg-gray-200 rounded-md"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                className="w-full px-4 py-2 bg-[#1C3F50] text-white rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
               />
             </div>
-            <button type="submit" className="w-full py-2 text-white bg-gray-700 rounded-md hover:bg-gray-600">
+
+            
+            <div className="flex items-center justify-between text-sm text-gray-300">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                  className="mr-2 h-4 w-4 text-teal-500 bg-white rounded"
+                />
+                Keep me logged in
+              </label>
+              <Link to="/forgot-password" className="underline hover:text-white">
+                Forget password?
+              </Link>
+            </div>
+
+            
+            <button
+              type="submit"
+              className="w-full py-2 text-lg font-semibold text-white bg-[#1C3F50] rounded-lg hover:bg-teal-500 transition"
+            >
               LOGIN
             </button>
           </form>
+
+          
+          <p className="mt-4 text-center text-gray-300">
+            Not registered yet?{" "}
+            <Link to="/register" className="underline hover:text-white">
+              Create an Account
+            </Link>
+          </p>
         </div>
       </div>
     </div>
   );
 }
-
-export default Login;
