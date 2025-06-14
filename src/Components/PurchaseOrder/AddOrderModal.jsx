@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 
 export default function AddOrderModal({ onClose }) {
-  const [success, setSuccess] = useState(false); // ✅ Added success state
+  const [success, setSuccess] = useState(false);
+  const [items, setItems] = useState([
+    { item: "", price: "" },
+  ]); // ✅ Item rows
 
-  // ✅ ESC key to close
+  // ESC key support
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -13,19 +16,31 @@ export default function AddOrderModal({ onClose }) {
     return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  // ✅ Success message handler
-  const handleAddOrder = () => {
+  // ✅ Add success message
+  const handleSubmitOrder = () => {
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
-      onClose(); // auto-close
+      onClose();
     }, 2000);
+  };
+
+  // ✅ Add new item row
+  const addItemRow = () => {
+    setItems([...items, { item: "", price: "" }]);
+  };
+
+  // ✅ Update row values
+  const handleItemChange = (index, field, value) => {
+    const updated = [...items];
+    updated[index][field] = value;
+    setItems(updated);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
       <div className="relative bg-white w-full max-w-md rounded-lg shadow-lg">
-        {/* ✖️ Close Button */}
+        {/* ❌ Close */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-white bg-[#21414d] hover:bg-red-600 rounded-full p-1 transition"
@@ -34,12 +49,12 @@ export default function AddOrderModal({ onClose }) {
           <FiX className="w-5 h-5" />
         </button>
 
-        {/* Header */}
+        {/* 🧾 Header */}
         <div className="bg-[#8DA1AF] text-black px-6 py-3 rounded-t-lg text-center text-xl font-bold">
           Add Order
         </div>
 
-        {/* Form */}
+        {/* 📋 Form */}
         <div className="p-6 space-y-4">
           <div>
             <label className="block mb-1 font-medium">Date :</label>
@@ -56,39 +71,59 @@ export default function AddOrderModal({ onClose }) {
             <input type="number" className="w-full p-2 bg-[#BED0DB] rounded" />
           </div>
 
+          {/* Table */}
           <div className="mt-4">
             <div className="flex justify-between bg-[#1C3F50] text-white font-semibold px-4 py-2 rounded-t gap-10">
               <span>Item</span>
               <span>Unit Price</span>
             </div>
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex justify-between items-center border-b px-4 py-2">
-                <select className="border-none outline-none w-1/2">
-                  <option>Alariya Sahal</option>
-                  <option>Atlas Pen</option>
+
+            {items.map((row, index) => (
+              <div key={index} className="flex justify-between items-center border-b px-4 py-2">
+                <select
+                  className="border-none outline-none w-1/2 bg-white"
+                  value={row.item}
+                  onChange={(e) => handleItemChange(index, "item", e.target.value)}
+                >
+                  <option value="">Select</option>
+                  <option value="Alariya Sahal">Alariya Sahal</option>
+                  <option value="Atlas Pen">Atlas Pen</option>
                 </select>
                 <input
                   type="text"
-                  className="w-1/2 text-right border-2 hover:border-[#1C3F50]"
+                  className="w-1/2 text-right border-2 hover:border-[#1C3F50] p-1 rounded"
+                  value={row.price}
+                  onChange={(e) => handleItemChange(index, "price", e.target.value)}
                 />
               </div>
             ))}
+
+            {/* ➕ Add Row Button */}
+            <div className="text-right mt-2">
+              <button
+                onClick={addItemRow}
+                className="text-[#1C3F50] hover:text-[#0d2c3b] font-bold text-lg"
+                title="Add Row"
+              >
+                <FiPlus className="inline-block w-6 h-6" />
+              </button>
+            </div>
           </div>
 
           {/* ✅ Success Message */}
           {success && (
             <div className="text-green-600 font-semibold text-center border border-green-300 bg-green-50 p-2 rounded">
-              Order added successfully!
+              Order submitted successfully!
             </div>
           )}
 
-          {/* ✅ Add Button */}
+          {/* ✅ Submit Button */}
           <div className="text-center mt-6">
             <button
-              onClick={handleAddOrder}
-              className="flex items-center justify-center gap-2 bg-[#DD9F52] text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition"
+              onClick={handleSubmitOrder}
+              className="bg-[#DD9F52] text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition"
             >
-              <FiPlus /> Add Order
+              Submit Order
             </button>
           </div>
         </div>
