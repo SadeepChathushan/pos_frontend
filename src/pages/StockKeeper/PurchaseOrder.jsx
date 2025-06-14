@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { FiSearch, FiChevronDown, FiUser } from "react-icons/fi";
-import AddOrderModal from "../../Components/AddOrderModal";
+import AddOrderModal from "../../Components/PurchaseOrder/AddOrderModal";
+import AddItemModal from "../../Components/PurchaseOrder/AddItemModal";
+import GRNModal from "../../Components/PurchaseOrder/GRNModal";
 
 
 const sampleData = [
@@ -13,6 +15,9 @@ const sampleData = [
 export default function PurchaseOrder() {
   const [query, setQuery] = useState("");
   const [showModal, setShowModal] = useState(false); 
+  const [showAddItemModal, setShowAddItemModal] = useState(false);
+  const [showGRNModal, setShowGRNModal]=useState(false);
+
 
 
 
@@ -60,11 +65,14 @@ export default function PurchaseOrder() {
           {/* Modal Component */}
           {showModal && <AddOrderModal onClose={() => setShowModal(false)} />}
           <button
-            onClick={() => console.log("Add Item")} 
+             onClick={() => setShowAddItemModal(true)}
             className="btn-size px-4 py-2 bg-[#10A1A3] text-white rounded-lg hover:bg-[#25CB51] transition"
           >
             + Add Item
           </button>
+           {showAddItemModal && (
+        <AddItemModal onClose={() => setShowAddItemModal(false)} />
+      )}
           
         </div>
       </div>
@@ -107,9 +115,15 @@ export default function PurchaseOrder() {
                     </button>
                   </td>
                   <td className="px-4 py-2">
-                    <button className="btn-size px-3 py-1 bg-[#B073C6] text-white rounded-full text-sm hover:bg-purple-500 transition">
+                    <button 
+                     onClick={() => setShowGRNModal(true)}
+                    className="btn-size px-3 py-1 bg-[#B073C6] text-white rounded-full text-sm hover:bg-purple-500 transition">
                       Add To GRN
                     </button>
+                    {showGRNModal && (
+                    <GRNModal onClose={() => setShowGRNModal(false)} />
+                    )}
+
                   </td>
                 </tr>
               ))
