@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 
 export default function AddOrderModal({ onClose }) {
+  const [success, setSuccess] = useState(false); // ✅ Added success state
+
   // ✅ ESC key to close
   useEffect(() => {
     const handleEsc = (e) => {
@@ -10,6 +12,15 @@ export default function AddOrderModal({ onClose }) {
     document.addEventListener("keydown", handleEsc);
     return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
+
+  // ✅ Success message handler
+  const handleAddOrder = () => {
+    setSuccess(true);
+    setTimeout(() => {
+      setSuccess(false);
+      onClose(); // auto-close
+    }, 2000);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
@@ -46,7 +57,7 @@ export default function AddOrderModal({ onClose }) {
           </div>
 
           <div className="mt-4">
-            <div className="flex justify-between  bg-[#1C3F50] text-white font-semibold px-4 py-2 rounded-t gap-10">
+            <div className="flex justify-between bg-[#1C3F50] text-white font-semibold px-4 py-2 rounded-t gap-10">
               <span>Item</span>
               <span>Unit Price</span>
             </div>
@@ -56,14 +67,25 @@ export default function AddOrderModal({ onClose }) {
                   <option>Alariya Sahal</option>
                   <option>Atlas Pen</option>
                 </select>
-                <input type="text"  className="w-1/2 text-right  border-2 hover:border-[#1C3F50]" />
+                <input
+                  type="text"
+                  className="w-1/2 text-right border-2 hover:border-[#1C3F50]"
+                />
               </div>
             ))}
           </div>
 
+          {/* ✅ Success Message */}
+          {success && (
+            <div className="text-green-600 font-semibold text-center border border-green-300 bg-green-50 p-2 rounded">
+              Order added successfully!
+            </div>
+          )}
+
+          {/* ✅ Add Button */}
           <div className="text-center mt-6">
             <button
-              onClick={onClose}
+              onClick={handleAddOrder}
               className="flex items-center justify-center gap-2 bg-[#DD9F52] text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition"
             >
               <FiPlus /> Add Order
