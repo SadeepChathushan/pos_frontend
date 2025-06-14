@@ -10,7 +10,7 @@ export default {
         palette: {
           orange: '#e4a246',
           beige: '#e0cc96',
-          bluegray: '#406d81',
+          bluegray: '#2C586E',
           lightblue: '#7b99ab',
           lighterblue: '#b5c7d6',
           deepblue: '#2b4e5f',
