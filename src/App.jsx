@@ -24,14 +24,10 @@ function App() {
           element={<PrivateRoute allowedRoles={["admin", "cashier", "stockkeeper"]} userRole={userRole} />}
         >
           <Route element={<AppLayout userRole={userRole} />}>
-            <Route path="/admin/*" element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path="/cashier/*" element={<Navigate to="/cashier/dashboard" replace />} />
-            <Route path="/stockkeeper/*" element={<Navigate to="/stockkeeper/stock-overview" replace />} />
-
             {/* Routes */}
-            <Route path="/admin/dashboard/*" element={<AdminRoutes />} />
-            <Route path="/cashier/dashboard/*" element={<CashierRoutes />} />
-            <Route path="/stockkeeper/stock-overview/*" element={<StockKeeperRoutes />} />
+            <Route path="/admin/*" element={<AdminRoutes />} />
+<Route path="/cashier/*" element={<CashierRoutes />} />
+<Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
           </Route>
         </Route>
 
