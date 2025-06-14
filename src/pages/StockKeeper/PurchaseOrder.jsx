@@ -2,10 +2,10 @@
 
 import React, { useState } from "react";
 import { FiSearch, FiChevronDown, FiUser } from "react-icons/fi";
-import AddOrderModal from "../../Components/PurchaseOrder/AddOrderModal";
-import AddItemModal from "../../Components/PurchaseOrder/AddItemModal";
-import GRNModal from "../../Components/PurchaseOrder/GRNModal";
-import ViewOrderModal from "../../Components/PurchaseOrder/ViewOrderModal";
+import AddOrderModal from "../../Components/StockKeeper/AddOrderModal";
+import AddItemModal from "../../Components/StockKeeper/AddItemModal";
+import GRNModal from "../../Components/StockKeeper/GRNModal";
+import ViewOrderModal from "../../Components/StockKeeper/ViewOrderModal";
 
 
 
