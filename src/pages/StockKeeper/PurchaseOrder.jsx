@@ -31,7 +31,7 @@ export default function PurchaseOrder() {
       {/* Search + Buttons */}
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-4 space-y-4 md:space-y-0">
         {/* Search box */}
-        <div className="relative w-full md:w-1/3">
+        <div className="relative w-full md:w-2/3">
           <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
@@ -47,13 +47,13 @@ export default function PurchaseOrder() {
         <div className="flex space-x-3">
           <button
             onClick={() => console.log("Add Order")}
-            className="px-4 py-2 bg-[#DD9F52] text-white rounded-lg hover:bg-orange-500 transition"
+            className="btn-size px-4 py-2 bg-[#DD9F52] text-white rounded-lg hover:bg-orange-500 transition"
           >
             + Add Order
           </button>
           <button
             onClick={() => console.log("Add Item")}
-            className="px-4 py-2 bg-[#10A1A3] text-white rounded-lg hover:bg-yellow-500 transition"
+            className="btn-size px-4 py-2 bg-[#10A1A3] text-white rounded-lg hover:bg-[#25CB51] transition"
           >
             + Add Item
           </button>
@@ -88,17 +88,17 @@ export default function PurchaseOrder() {
                         po.paid ? "bg-green-500" : "bg-red-500"
                       }`}
                     />
-                    <span className="text-gray-700 text-sm">
+                    <span className="text-gray-700 text-sm px-4 py-2">
                       {po.paid ? "Paid" : "Unpaid"}
                     </span>
                   </td>
                   <td className="px-4 py-2">
-                    <button className="px-3 py-1 bg-blue-500 text-white rounded-full text-sm hover:bg-blue-600 transition">
+                    <button className="btn-size px-3 py-1 bg-[#4285F4] text-white rounded-full text-sm hover:bg-blue-600 transition">
                       View
                     </button>
                   </td>
                   <td className="px-4 py-2">
-                    <button className="px-3 py-1 bg-purple-400 text-white rounded-full text-sm hover:bg-purple-500 transition">
+                    <button className="btn-size px-3 py-1 bg-[#B073C6] text-white rounded-full text-sm hover:bg-purple-500 transition">
                       Add To GRN
                     </button>
                   </td>

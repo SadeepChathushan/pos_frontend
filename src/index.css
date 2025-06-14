@@ -5,3 +5,9 @@
 @layer base {
   /* Custom styles here */
 }
+
+.btn-size {
+  width: 4cm;
+  height: 1.2cm;
+}
+
