@@ -2,8 +2,9 @@
 
 import React, { useState } from "react";
 import { FiSearch, FiChevronDown, FiUser } from "react-icons/fi";
-import AddOrderModal from "../../Components/AddOrderModal";
-import AddItemModal from "../../Components/AddItemModal";
+import AddOrderModal from "../../Components/PurchaseOrder/AddOrderModal";
+import AddItemModal from "../../Components/PurchaseOrder/AddItemModal";
+import GRNModal from "../../Components/PurchaseOrder/GRNModal";
 
 
 const sampleData = [
@@ -15,6 +16,7 @@ export default function PurchaseOrder() {
   const [query, setQuery] = useState("");
   const [showModal, setShowModal] = useState(false); 
   const [showAddItemModal, setShowAddItemModal] = useState(false);
+  const [showGRNModal, setShowGRNModal]=useState(false);
 
 
 
@@ -113,9 +115,15 @@ export default function PurchaseOrder() {
                     </button>
                   </td>
                   <td className="px-4 py-2">
-                    <button className="btn-size px-3 py-1 bg-[#B073C6] text-white rounded-full text-sm hover:bg-purple-500 transition">
+                    <button 
+                     onClick={() => setShowGRNModal(true)}
+                    className="btn-size px-3 py-1 bg-[#B073C6] text-white rounded-full text-sm hover:bg-purple-500 transition">
                       Add To GRN
                     </button>
+                    {showGRNModal && (
+                    <GRNModal onClose={() => setShowGRNModal(false)} />
+                    )}
+
                   </td>
                 </tr>
               ))
