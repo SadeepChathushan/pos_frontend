@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import { FiSearch, FiChevronDown, FiUser } from "react-icons/fi";
+import AddOrderModal from "../../Components/AddOrderModal";
+
 
 const sampleData = [
   { id: "P01", date: "2025/03/09", name: "Mr. Jagath", amount: 12000, paid: false },
@@ -10,6 +12,9 @@ const sampleData = [
 
 export default function PurchaseOrder() {
   const [query, setQuery] = useState("");
+  const [showModal, setShowModal] = useState(false); 
+
+
 
   const filtered = sampleData.filter(
     (po) =>
@@ -46,17 +51,21 @@ export default function PurchaseOrder() {
         {/* Add Order / Add Item */}
         <div className="flex space-x-3">
           <button
-            onClick={() => console.log("Add Order")}
+            // onClick={() => console.log("Add Order")}
+            onClick={() => setShowModal(true)}
             className="btn-size px-4 py-2 bg-[#DD9F52] text-white rounded-lg hover:bg-orange-500 transition"
           >
             + Add Order
           </button>
+          {/* Modal Component */}
+          {showModal && <AddOrderModal onClose={() => setShowModal(false)} />}
           <button
-            onClick={() => console.log("Add Item")}
+            onClick={() => console.log("Add Item")} 
             className="btn-size px-4 py-2 bg-[#10A1A3] text-white rounded-lg hover:bg-[#25CB51] transition"
           >
             + Add Item
           </button>
+          
         </div>
       </div>
 
