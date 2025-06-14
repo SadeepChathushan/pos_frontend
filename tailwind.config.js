@@ -16,7 +16,8 @@ export default {
           deepblue: '#2b4e5f',
           navy: '#21414d',
           neon: '#3bf563',
-          purple: '#be8ed6',
+          purple: '#B073C6',
+          green:'#47EB73',
         }
       }
     },
