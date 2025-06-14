@@ -45,7 +45,7 @@ const Sidebar = ({ userRole }) => {
                 <span className="text-lg">Billing</span>
               </Link>
               <Link
-                to="/cashier/customers"
+                to="/cashier/customer-history"
                 className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
               >
                 <ShoppingCart size={20} />
