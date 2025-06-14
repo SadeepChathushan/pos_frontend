@@ -5,6 +5,8 @@ import { FiSearch, FiChevronDown, FiUser } from "react-icons/fi";
 import AddOrderModal from "../../Components/PurchaseOrder/AddOrderModal";
 import AddItemModal from "../../Components/PurchaseOrder/AddItemModal";
 import GRNModal from "../../Components/PurchaseOrder/GRNModal";
+import ViewOrderModal from "../../Components/PurchaseOrder/ViewOrderModal";
+
 
 
 
@@ -18,6 +20,8 @@ export default function PurchaseOrder() {
   const [showModal, setShowModal] = useState(false); 
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showGRNModal, setShowGRNModal]=useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+
 
 
 
@@ -111,9 +115,18 @@ export default function PurchaseOrder() {
                     </span>
                   </td>
                   <td className="px-4 py-2">
-                    <button className="btn-size px-3 py-1 bg-[#4285F4] text-white rounded-full text-sm hover:bg-blue-600 transition">
+                    <button 
+                     onClick={() => setSelectedOrder(po)}
+                    className="btn-size px-3 py-1 bg-[#4285F4] text-white rounded-full text-sm hover:bg-blue-600 transition">
                       View
                     </button>
+                    {selectedOrder && (
+  <ViewOrderModal
+    order={selectedOrder}
+    onClose={() => setSelectedOrder(null)}
+  />
+)}
+                    
                   </td>
                   <td className="px-4 py-2">
                     <button 

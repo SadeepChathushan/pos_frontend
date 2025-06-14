@@ -4,8 +4,8 @@ import { FiPlus, FiX } from "react-icons/fi";
 export default function AddOrderModal({ onClose }) {
   const [success, setSuccess] = useState(false);
   const [items, setItems] = useState([
-    { item: "", price: "" },
-  ]); // ✅ Item rows
+    { item: "", price: "", quantity: "" }, // ✅ added quantity
+  ]);
 
   // ESC key support
   useEffect(() => {
@@ -16,7 +16,6 @@ export default function AddOrderModal({ onClose }) {
     return () => document.removeEventListener("keydown", handleEsc);
   }, [onClose]);
 
-  // ✅ Add success message
   const handleSubmitOrder = () => {
     setSuccess(true);
     setTimeout(() => {
@@ -25,12 +24,10 @@ export default function AddOrderModal({ onClose }) {
     }, 2000);
   };
 
-  // ✅ Add new item row
   const addItemRow = () => {
-    setItems([...items, { item: "", price: "" }]);
+    setItems([...items, { item: "", price: "", quantity: "" }]); // ✅ includes quantity
   };
 
-  // ✅ Update row values
   const handleItemChange = (index, field, value) => {
     const updated = [...items];
     updated[index][field] = value;
@@ -73,27 +70,45 @@ export default function AddOrderModal({ onClose }) {
 
           {/* Table */}
           <div className="mt-4">
-            <div className="flex justify-between bg-[#1C3F50] text-white font-semibold px-4 py-2 rounded-t gap-10">
+            <div className="grid grid-cols-3 bg-[#1C3F50] text-white font-semibold px-4 py-2 rounded-t">
               <span>Item</span>
-              <span>Unit Price</span>
+              <span className="text-right">Unit Price</span>
+              <span className="text-right">Quantity</span>
             </div>
 
             {items.map((row, index) => (
-              <div key={index} className="flex justify-between items-center border-b px-4 py-2">
+              <div
+                key={index}
+                className="grid grid-cols-3 items-center border-b px-4 py-2 gap-2"
+              >
                 <select
-                  className="border-none outline-none w-1/2 bg-white"
+                  className="border rounded p-1 bg-white"
                   value={row.item}
-                  onChange={(e) => handleItemChange(index, "item", e.target.value)}
+                  onChange={(e) =>
+                    handleItemChange(index, "item", e.target.value)
+                  }
                 >
                   <option value="">Select</option>
                   <option value="Alariya Sahal">Alariya Sahal</option>
                   <option value="Atlas Pen">Atlas Pen</option>
                 </select>
+
                 <input
                   type="text"
-                  className="w-1/2 text-right border-2 hover:border-[#1C3F50] p-1 rounded"
+                  className="text-right border-2 hover:border-[#1C3F50] p-1 rounded"
                   value={row.price}
-                  onChange={(e) => handleItemChange(index, "price", e.target.value)}
+                  onChange={(e) =>
+                    handleItemChange(index, "price", e.target.value)
+                  }
+                />
+
+                <input
+                  type="number"
+                  className="text-right border-2 hover:border-[#1C3F50] p-1 rounded"
+                  value={row.quantity}
+                  onChange={(e) =>
+                    handleItemChange(index, "quantity", e.target.value)
+                  }
                 />
               </div>
             ))}
