@@ -73,12 +73,12 @@ export default function AddItemModal({ onClose }) {
             >
               Add Item
             </button>
-            <button
+            {/* <button
               onClick={onClose}
               className="bg-[#47EB73] text-white px-6 py-2 rounded-lg hover:bg-green-500 transition btn-size"
             >
               Cancel
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
