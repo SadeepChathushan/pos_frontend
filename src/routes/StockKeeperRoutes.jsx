@@ -3,6 +3,9 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import StockKeeperDashboard from '../pages/StockKeeper/Dashboard';
 import PurchaseOrder from '../pages/StockKeeper/PurchaseOrder';
+import RandomDelivery from '../pages/StockKeeper/RandomDelivery';
+import GRN from '../pages/StockKeeper/GRN';
+import Inventory from '../pages/StockKeeper/Inventory';
 
 const StockKeeperRoutes = () => (
   <Routes>
@@ -10,6 +13,10 @@ const StockKeeperRoutes = () => (
     {/* Other admin-specific routes */}
 
     <Route path='/purchaseorder' element = {<PurchaseOrder />}/>
+    <Route path='/randomdelivery' element={<RandomDelivery/>}/>
+    <Route path='/grn' element={<GRN/>}/>
+    <Route path='/inventory' element={<Inventory/>}/>
+    
   </Routes>
 );
 
