@@ -112,7 +112,7 @@ const Sidebar = ({ userRole }) => {
             <span className="text-lg">Random delivery</span>
           </Link>
           <Link
-            to="/grn"
+            to="/stockkeeper/grn"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
           >
             <ClipboardList size={20} />
