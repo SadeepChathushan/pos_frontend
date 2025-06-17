@@ -105,21 +105,21 @@ const Sidebar = ({ userRole }) => {
                 <span className="text-lg">Purchase Order</span>
               </Link>
               <Link
-            to="/random-delivery"
+            to="/stockkeeper/randomdelivery"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
           >
             <Package size={20} />
             <span className="text-lg">Random delivery</span>
           </Link>
           <Link
-            to="/grn"
+            to="/stockkeeper/grn"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
           >
             <ClipboardList size={20} />
             <span className="text-lg">GRN</span>
           </Link>
           <Link
-            to="/inventory"
+            to="/stockkeeper/inventory"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
           >
             <Boxes size={20} />
