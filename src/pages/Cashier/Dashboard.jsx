@@ -1,73 +1,117 @@
-import React from 'react';
+import React from "react";
+import {
+  DollarSign,
+  TrendingUp,
+  Users,
+  ShoppingCart,
+  CreditCard,
+  RotateCcw,
+} from "lucide-react";
+import FloatingCalculator 
+ from "../../Components/cal";
 
 const Dashboard = () => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 overflow-hidden h-screen">
+      {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-palette-bluegray">Cashier Dashboard</h1>
         <span className="text-palette-lightblue">👤 Ms.Lakshi</span>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded shadow text-center border-t-4 border-palette-orange">
-          <h2 className="text-lg font-semibold text-palette-bluegray">Total Sales Today</h2>
-          <p className="text-2xl font-bold text-palette-orange">12000</p>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="bg-white p-4 rounded shadow border-t-4 border-palette-orange flex items-center gap-4">
+          <div className="bg-palette-orange/20 p-3 rounded-full">
+            <DollarSign className="text-palette-orange" size={32} />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-palette-bluegray">Total Sales Today</h2>
+            <p className="text-2xl font-bold text-palette-orange">12000</p>
+          </div>
         </div>
-        <div className="bg-white p-4 rounded shadow text-center border-t-4 border-palette-neon">
-          <h2 className="text-lg font-semibold text-palette-bluegray">Sales Today</h2>
-          <p className="text-2xl font-bold text-palette-neon">40</p>
+
+        <div className="bg-white p-4 rounded shadow border-t-4 border-palette-neon flex items-center gap-4">
+          <div className="bg-palette-neon/20 p-3 rounded-full">
+            <TrendingUp className="text-palette-neon" size={32} />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-palette-bluegray">Sales Today</h2>
+            <p className="text-2xl font-bold text-palette-neon">40</p>
+          </div>
         </div>
-        <div className="bg-white p-4 rounded shadow text-center border-t-4 border-palette-purple">
-          <h2 className="text-lg font-semibold text-palette-bluegray">Total Customers</h2>
-          <p className="text-2xl font-bold text-palette-purple">40</p>
+
+        <div className="bg-white p-4 rounded shadow border-t-4 border-palette-purple flex items-center gap-4">
+          <div className="bg-palette-purple/20 p-3 rounded-full">
+            <Users className="text-palette-purple" size={32} />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-palette-bluegray">Total Customers</h2>
+            <p className="text-2xl font-bold text-palette-purple">40</p>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg font-bold mb-4 text-palette-deepblue">New Sale</h2>
-          <div className="flex gap-2 mb-2">
-            <input className="w-full mb-2 border p-2 rounded" placeholder="Product or item select" />
-            <button className="px-4 bg-palette-beige rounded">+</button>
+      {/* Sales Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* New Sale */}
+        <div className="bg-white p-6 rounded shadow space-y-4">
+          <h2 className="text-lg font-bold text-palette-deepblue flex items-center gap-2">
+            <ShoppingCart className="text-palette-deepblue" size={20} /> New Sale
+          </h2>
+
+          <div className="flex items-center gap-2">
+            <input className="w-full border p-2 rounded" placeholder="Product or item select" />
+            <button className="bg-palette-beige px-3 py-1 rounded text-sm font-medium">+</button>
           </div>
 
-          <div className="flex gap-2 mb-2">
-            <input className="flex-1 border p-2 rounded" placeholder="Quantity" />
-            <button className="px-4 bg-palette-beige rounded">+</button>
+          <div className="flex items-center gap-2">
+            <input className="w-full border p-2 rounded" placeholder="Quantity" />
+            <button className="bg-palette-beige px-3 py-1 rounded text-sm font-medium">+</button>
           </div>
 
-          <div className="flex justify-between mb-2 text-sm text-palette-bluegray">
+          <div className="grid grid-cols-3 text-sm text-palette-bluegray text-center mt-4">
             <span>Discount</span>
             <span>Tax</span>
             <span>Total</span>
           </div>
 
-          <div className="flex justify-between">
-            <button className="bg-palette-orange text-white px-4 py-2 rounded">Print bill</button>
-            <button className="bg-palette-bluegray text-white px-4 py-2 rounded">Credit Card</button>
-            <button className="bg-palette-lighterblue text-white px-4 py-2 rounded">Return</button>
+          <div className="flex justify-between mt-4 gap-2">
+            <button className="flex-1 bg-palette-orange text-white px-4 py-2 rounded flex items-center justify-center gap-2">
+              <ShoppingCart size={16} /> Print Bill
+            </button>
+            <button className="flex-1 bg-palette-bluegray text-white px-4 py-2 rounded flex items-center justify-center gap-2">
+              <CreditCard size={16} /> Credit Card
+            </button>
+            <button className="flex-1 bg-palette-lighterblue text-white px-4 py-2 rounded flex items-center justify-center gap-2">
+              <RotateCcw size={16} /> Return
+            </button>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="text-lg font-bold mb-4 text-palette-deepblue">Recent Sales</h2>
-          <table className="w-full text-left text-sm">
-            <thead>
+        {/* Recent Sales */}
+        <div className="bg-white p-6 rounded shadow">
+          <h2 className="text-lg font-bold text-palette-deepblue mb-4">Recent Sales</h2>
+          <table className="w-full text-left text-sm border">
+            <thead className="bg-gray-100">
               <tr className="border-b">
-                <th>Date</th>
-                <th>Customer</th>
-                <th>Total</th>
+                <th className="py-2 px-3">Date</th>
+                <th className="py-2 px-3">Customer</th>
+                <th className="py-2 px-3">Total</th>
               </tr>
             </thead>
             <tbody>
               <tr className="border-b">
-                <td>2025-06-13</td>
-                <td>John</td>
-                <td>$150</td>
+                <td className="py-2 px-3">2025-06-13</td>
+                <td className="py-2 px-3">John</td>
+                <td className="py-2 px-3">$150</td>
               </tr>
-              {/* More rows */}
+              {/* You can map more rows here */}
+               
             </tbody>
           </table>
+          <FloatingCalculator />
+
         </div>
       </div>
     </div>
