@@ -44,7 +44,7 @@ export default function Inventory() {
     "h-10 px-4 text-sm font-medium rounded-lg flex items-center justify-center transition";
 
   return (
-    <div className="relative min-h-screen bg-[#BED0DB] p-6">
+    <div className="bg-[#BED0DB] ">
       {/* Success Toast */}
       {showSuccess && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">

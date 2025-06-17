@@ -6,7 +6,7 @@ import PurchaseOrder from '../pages/StockKeeper/PurchaseOrder';
 import RandomDelivery from '../pages/StockKeeper/RandomDelivery';
 import GRN from '../pages/StockKeeper/GRN';
 import Inventory from '../pages/StockKeeper/Inventory';
-import ReturnExpire from '../pages/StockKeeper/Reurn-Expire';
+import ReturnExpire from '../pages/StockKeeper/Return-Expire';
 
 const StockKeeperRoutes = () => (
   <Routes>
