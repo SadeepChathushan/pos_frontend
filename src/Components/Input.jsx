@@ -2,7 +2,7 @@ import React from "react";
 
 const BlueInput = ({ label, value, onChange, placeholder, type = "text" }) => {
   return (
-    <div className="mb-2 w-full">
+    <div className="mb-1 w-full">
       {label && <label className="block mb-1 text-sm text-deepblue font-medium">{label}</label>}
       <input
         type={type}
