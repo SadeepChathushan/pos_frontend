@@ -119,7 +119,7 @@ const Sidebar = ({ userRole }) => {
             <span className="text-lg">GRN</span>
           </Link>
           <Link
-            to="/inventory"
+            to="/stockkeeper/inventory"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
           >
             <Boxes size={20} />
