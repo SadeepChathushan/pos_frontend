@@ -5,6 +5,8 @@ const Billing = () => {
   const [barcode, setBarcode] = useState("");
   const [amountInput, setAmountInput] = useState("");
   const [changeDue, setChangeDue] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   const [cartItems] = useState([
     { name: "Coca Cola", qty: 2, price: 100 },
@@ -14,7 +16,7 @@ const Billing = () => {
   const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
 
   return (
-    <div className="w-full">
+    <div className="w-full relative">
       {/* Top Header Bar */}
       <div className="flex justify-between items-center px-6 py-3 rounded-t-md">
         <h1 className="text-2xl font-bold text-palette-bluegray">Billing</h1>
@@ -77,11 +79,6 @@ const Billing = () => {
               <span>Discount:</span>
               <span>0.00</span>
             </div>
-
-            <div className="flex gap-3">
-              <button className="btn-size bg-palette-green rounded text-white font-bold">Pay</button>
-              <button className="btn-size bg-palette-orange rounded text-white font-bold">Cancel</button>
-            </div>
           </div>
         </div>
 
@@ -95,10 +92,38 @@ const Billing = () => {
               Amount Due: <strong>{total}.00</strong>
             </p>
             <div className="flex flex-col items-center space-y-3">
-              <button className="btn-size bg-palette-orange rounded text-white font-bold">Card</button>
-              <button className="btn-size bg-palette-green rounded text-white font-bold">Cash</button>
-              <button className="btn-size bg-palette-purple rounded text-white font-bold">Credit</button>
+              <button
+                onClick={() => setPaymentMethod("card")}
+                className={`btn-size rounded text-white font-bold ${
+                  paymentMethod === "card"
+                    ? "bg-orange-600"
+                    : "bg-palette-orange hover:bg-orange-500"
+                }`}
+              >
+                Card
+              </button>
+              <button
+                onClick={() => setPaymentMethod("cash")}
+                className={`btn-size rounded text-white font-bold ${
+                  paymentMethod === "cash"
+                    ? "bg-green-700"
+                    : "bg-palette-green hover:bg-green-600"
+                }`}
+              >
+                Cash
+              </button>
+              <button
+                onClick={() => setPaymentMethod("credit")}
+                className={`btn-size rounded text-white font-bold ${
+                  paymentMethod === "credit"
+                    ? "bg-purple-700"
+                    : "bg-palette-purple hover:bg-purple-600"
+                }`}
+              >
+                Credit
+              </button>
             </div>
+
             <div className="space-y-2">
               <div>
                 <label className="block text-sm font-medium mb-1">Enter Amount</label>
@@ -115,13 +140,23 @@ const Billing = () => {
                   value={changeDue}
                   onChange={(e) => setChangeDue(e.target.value)}
                   placeholder="Change due..."
-                  className="w-full border p-2 rounded"
+                  disabled={paymentMethod === "card"}
+                  className={`w-full border p-2 rounded ${
+                    paymentMethod === "card" ? "bg-gray-200 text-gray-500 cursor-not-allowed" : ""
+                  }`}
                 />
               </div>
             </div>
-            <button className="w-full bg-deepblue text-white font-bold py-2 rounded">
-              Confirm Payment
-            </button>
+
+            <div className="flex gap-3">
+              <button
+                className="btn-size bg-palette-green rounded text-white font-bold"
+                onClick={() => setShowPopup(true)}
+              >
+                Pay
+              </button>
+              <button className="btn-size bg-palette-orange rounded text-white font-bold">Cancel</button>
+            </div>
           </div>
         </div>
 
@@ -132,9 +167,7 @@ const Billing = () => {
           </div>
           <div className="bg-white p-4 space-y-3 rounded-b-lg text-sm">
             <div>
-              <p>
-                <strong>Keels</strong>
-              </p>
+              <p><strong>Keels</strong></p>
               <p>No:09, Attidiya, Ratmalane</p>
               <p>04/04/2025 - 10:31:08 AM</p>
               <p>Bill No: B0097 | Ms. Janudi</p>
@@ -161,12 +194,10 @@ const Billing = () => {
             </table>
             <div className="space-y-1">
               <p>Discount: 0.00</p>
-              <p>
-                <strong>Grand Total: {total}.00</strong>
-              </p>
+              <p><strong>Grand Total: {total}.00</strong></p>
               <p>Paid Amount: {total}.00</p>
-              <p>Payment Method: Cash</p>
-              <p>Change Due: 0.00</p>
+              <p>Payment Method: {paymentMethod || "-"}</p>
+              <p>Change Due: {changeDue || "0.00"}</p>
             </div>
             <p className="text-center font-semibold">Thank You For Purchase!</p>
             <div className="flex gap-3">
@@ -176,6 +207,48 @@ const Billing = () => {
           </div>
         </div>
       </div>
+
+      {/* Popup Modal */}
+      {showPopup && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-[400px] rounded-lg shadow-lg p-6 relative space-y-4 text-center">
+            <h2 className="text-xl font-bold text-palette-deepblue mb-2">Payment Details</h2>
+            <p className="text-sm mb-4">Amount to Pay: <strong>{total}.00</strong></p>
+
+            {paymentMethod === "card" ? (
+              <div className="space-y-2">
+                <p className="text-gray-700 font-medium">💳 Enter Card Details</p>
+                <input className="w-full border p-2 rounded" placeholder="Card Number" />
+                <input className="w-full border p-2 rounded" placeholder="Expiry Date" />
+                <input className="w-full border p-2 rounded" placeholder="CVV" />
+                <button
+                  className="w-full bg-palette-orange text-white font-bold py-2 rounded mt-3"
+                  onClick={() => setShowPopup(false)}
+                >
+                  Pay Now
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <p className="text-green-600 font-semibold text-lg">✅ Payment Successful!</p>
+                <button
+                  className="w-full bg-palette-green text-white font-bold py-2 rounded"
+                  onClick={() => setShowPopup(false)}
+                >
+                  Close
+                </button>
+              </div>
+            )}
+
+            <button
+              className="absolute top-2 right-3 text-gray-500 hover:text-black text-lg"
+              onClick={() => setShowPopup(false)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -33,7 +33,7 @@ const attendanceData = [
 
 export default function Attendance() {
   return (
-    <div className="min-h-screen p-6 text-sm">
+    <div className="min-h-screen  ">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-800">Attendance</h1>
