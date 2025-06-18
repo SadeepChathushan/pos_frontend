@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FiSearch, FiChevronDown, FiUser } from "react-icons/fi";
 import AddUserModal from "../../Components/Admin/AddUserModal";
-
+import EditUserModal from "../../Components/Admin/EditUserModal";
+import DeleteUserModal from "../../Components/Admin/DeleteUserModal";
 
 
 const sampleUsers = [
@@ -12,6 +13,8 @@ const sampleUsers = [
 export default function UserManagement() {
   const [query, setQuery] = useState("");
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [deletingUser, setDeletingUser] =useState(null);
 
   const filtered = sampleUsers.filter(
     (u) =>
@@ -81,12 +84,25 @@ export default function UserManagement() {
                 <td className="px-4 py-2">{user.role}</td>
                 <td className="px-4 py-2">{user.lastLogin}</td>
                 <td className="px-4 py-2 space-x-2">
-                  <button className="bg-[#4285F4] text-white px-4 py-1 rounded-full text-sm hover:bg-blue-500 btn-size">
+                  <button
+                    onClick={() => setEditingUser(user)}
+                    className="bg-[#4285F4] text-white px-4 py-1 rounded-full text-sm hover:bg-blue-600 btn-size" 
+                  >
                     Edit
-                  </button>
-                  <button className="bg-[#B073C6] text-white px-4 py-1 rounded-full text-sm hover:bg-purple-500 btn-size">
+                </button>
+                {editingUser && (
+                <EditUserModal user={editingUser} onClose={() => setEditingUser(null)} />
+                )}
+
+                  <button 
+                  onClick={() => setDeletingUser(user)}
+                  className="bg-[#B073C6] text-white px-4 py-1 rounded-full text-sm hover:bg-purple-500 btn-size">
                     Delete
                   </button>
+                  {deletingUser &&(
+                    <DeleteUserModal user={deletingUser} onClose={()=> setDeletingUser(null)}/>
+
+                  )}
                 </td>
               </tr>
             ))}
