@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import BlueInput from "../../Components/Input";
 
 const CustomerHistory = () => {
   const [searchValue, setSearchValue] = useState("");
-  
 
   const historyData = [
     {
@@ -28,21 +26,23 @@ const CustomerHistory = () => {
         <span className="text-sm text-gray-700">👤 Ms.Lakshi</span>
       </div>
 
+      {/* Search */}
       <div className="flex items-center mb-6 gap-2">
-  <label className="text-lg font-medium whitespace-nowrap mr-2">
-    Customer Name :
-  </label>
-  <div className="flex-1">
-    <BlueInput
-      value={searchValue}
-      onChange={(e) => setSearchValue(e.target.value)}
-      placeholder="Type or scan..."
-    />
-  </div>
-  <button className="bg-palette-orange text-white px-5 py-2 rounded font-semibold ml-2">
-    Search
-  </button>
-</div>
+        <label className="text-lg font-medium whitespace-nowrap mr-2">
+          Customer Name :
+        </label>
+        <div className="flex-1">
+          <input
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            placeholder="Type or scan..."
+            className="w-full border p-2 rounded text-sm"
+          />
+        </div>
+        <button className="bg-palette-orange text-white px-5 py-2 rounded font-semibold ml-2">
+          Search
+        </button>
+      </div>
 
       {/* Table */}
       <div className="overflow-x-auto">
@@ -88,18 +88,17 @@ const CustomerHistory = () => {
       </div>
 
       {/* Action Buttons */}
-    <div className="flex justify-center gap-20 mt-6">
-  <button className="w-[150px] py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded">
-    View Bill
-  </button>
-  <button className="w-[150px] py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded">
-    Print History
-  </button>
-  <button className="w-[150px] py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded">
-    Close
-  </button>
-</div>
-
+      <div className="flex justify-center gap-20 mt-6">
+        <button className="w-[150px] py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded">
+          View Bill
+        </button>
+        <button className="w-[150px] py-2 bg-purple-500 hover:bg-purple-600 text-white font-semibold rounded">
+          Print History
+        </button>
+        <button className="w-[150px] py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded">
+          Close
+        </button>
+      </div>
     </div>
   );
 };
