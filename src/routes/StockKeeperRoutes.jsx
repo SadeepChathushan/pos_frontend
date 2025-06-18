@@ -6,6 +6,7 @@ import PurchaseOrder from '../pages/StockKeeper/PurchaseOrder';
 import RandomDelivery from '../pages/StockKeeper/RandomDelivery';
 import GRN from '../pages/StockKeeper/GRN';
 import Inventory from '../pages/StockKeeper/Inventory';
+import ReturnExpire from '../pages/StockKeeper/Return-Expire';
 
 const StockKeeperRoutes = () => (
   <Routes>
@@ -16,6 +17,8 @@ const StockKeeperRoutes = () => (
     <Route path='/randomdelivery' element={<RandomDelivery/>}/>
     <Route path='/grn' element={<GRN/>}/>
     <Route path='/inventory' element={<Inventory/>}/>
+    <Route path='/return-expire' element={<ReturnExpire/>}/>
+    
     
   </Routes>
 );

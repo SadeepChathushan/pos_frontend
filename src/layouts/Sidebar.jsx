@@ -126,7 +126,7 @@ const Sidebar = ({ userRole }) => {
             <span className="text-lg">Inventory</span>
           </Link>
           <Link
-            to="/return-expire"
+            to="/stockkeeper/return-expire"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
           >
             <Repeat size={20} />
