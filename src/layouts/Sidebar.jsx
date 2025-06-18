@@ -148,7 +148,7 @@ const Sidebar = ({ userRole }) => {
               <span className="text-lg">Settings</span>
             </Link>
             <Link
-              to="/logout"
+              to="/login"
               className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
             >
               <LogOut size={20} />
