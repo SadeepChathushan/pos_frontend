@@ -17,6 +17,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/notfound" element={NotFound} />
 
         <Route path="/login" element={<Login setUserRole={setUserRole} />} />
 
