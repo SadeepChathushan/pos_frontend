@@ -64,7 +64,7 @@ const Sidebar = ({ userRole }) => {
                 <span className="text-lg">Dashboard</span>
               </Link>
               <Link
-                to="/admin/employees"
+                to="/admin/employee"
                 className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
               >
                 <UserCog size={20} />
