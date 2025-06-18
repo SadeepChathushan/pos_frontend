@@ -71,7 +71,7 @@ const Sidebar = ({ userRole }) => {
                 <span className="text-lg">Employees</span>
               </Link>
               <Link
-                to="/admin/user-management"
+                to="/admin/usermanagement"
                 className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
               >
                 <Users size={20} />
