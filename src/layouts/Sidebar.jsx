@@ -97,6 +97,7 @@ const Sidebar = ({ userRole }) => {
                 <ClipboardCheck size={20} />
                 <span className="text-lg">Dashboard</span>
               </Link>
+              
               <Link
                 to="/stockkeeper/purchaseorder"
                 className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
@@ -118,6 +119,13 @@ const Sidebar = ({ userRole }) => {
             <ClipboardList size={20} />
             <span className="text-lg">GRN</span>
           </Link>
+          <Link
+                to="/stockkeeper/suppliers"
+                className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
+              >
+                <ClipboardCheck size={20} />
+                <span className="text-lg">Suppliers</span>
+              </Link>
           <Link
             to="/stockkeeper/inventory"
             className="hover:bg-[#3A4A5E] p-3 rounded-md flex items-center space-x-3"
