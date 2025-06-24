@@ -55,11 +55,11 @@ export default function RandomDelivery() {
         </div>
 
         {/* Add Order  */}
-        <div className="flex space-x-3">
+         <div className="flex flex-col md:flex-row md:justify-end items-center space-y-3 md:space-y-0 md:space-x-3 mt-4">
           <button
             // onClick={() => console.log("Add Order")}
             onClick={() => setShowModal(true)}
-            className="btn-size px-4 py-2 bg-[#DD9F52] text-white rounded-lg hover:bg-orange-500 transition"
+            className="btn-size w-40 px-4 py-2 bg-[#DD9F52] text-white rounded-lg hover:bg-orange-500 transition"
           >
             + Add Order
           </button>
