@@ -16,21 +16,21 @@ const Billing = () => {
   const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full h-screen flex flex-col overflow-hidden">
       {/* Top Header Bar */}
-      <div className="flex justify-between items-center px-6 py-3 rounded-t-md">
-        <h1 className="text-2xl font-bold text-palette-bluegray">Billing</h1>
+      <div className="flex justify-between items-center px-4 py-2 bg-white shadow-sm">
+        <h1 className="text-xl font-bold text-palette-bluegray">Billing</h1>
         <span className="text-sm text-gray-700 flex items-center gap-1">👤 Ms.Lakshi</span>
       </div>
 
       {/* Main Content Panels */}
-      <div className="flex gap-4 p-4 text-sm">
+      <div className="flex flex-col md:flex-row gap-4 p-4 overflow-auto flex-1">
         {/* Cashier Terminal */}
-        <div className="w-1/3 overflow-hidden rounded-lg">
+        <div className="w-full md:w-1/3 overflow-hidden rounded-lg flex flex-col">
           <div className="bg-palette-deepblue text-white p-3 rounded-t-lg">
             <h2 className="text-lg font-semibold">Cashier Terminal</h2>
           </div>
-          <div className="bg-white p-4 space-y-3 rounded-b-lg">
+          <div className="bg-white p-4 space-y-3 rounded-b-lg flex-1">
             <div className="space-y-2">
               <div>
                 <label className="block text-sm font-medium mb-1">Search Product</label>
@@ -52,24 +52,26 @@ const Billing = () => {
               </div>
             </div>
 
-            <table className="w-full text-left text-sm mb-3">
-              <thead className="bg-lightblue text-palette-deepblue">
-                <tr>
-                  <th>Cart Items</th>
-                  <th>QTY</th>
-                  <th>Sub Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item, index) => (
-                  <tr key={index} className="border-t">
-                    <td>{item.name}</td>
-                    <td>{item.qty.toString().padStart(2, "0")}</td>
-                    <td>{item.qty * item.price}.00</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm mb-3">
+                <thead className="bg-lightblue text-palette-deepblue">
+                  <tr>
+                    <th>Cart Items</th>
+                    <th>QTY</th>
+                    <th>Sub Total</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {cartItems.map((item, index) => (
+                    <tr key={index} className="border-t">
+                      <td>{item.name}</td>
+                      <td>{item.qty.toString().padStart(2, "0")}</td>
+                      <td>{item.qty * item.price}.00</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
 
             <div className="flex justify-between font-semibold">
               <span>Total:</span>
@@ -83,45 +85,36 @@ const Billing = () => {
         </div>
 
         {/* Payment Screen */}
-        <div className="w-1/3 overflow-hidden rounded-lg">
+        <div className="w-full md:w-1/3 overflow-hidden rounded-lg flex flex-col">
           <div className="bg-palette-deepblue text-white p-3 rounded-t-lg">
             <h2 className="text-lg font-semibold">Payment Screen</h2>
           </div>
-          <div className="bg-white p-4 space-y-3 rounded-b-lg">
+          <div className="bg-white p-4 space-y-3 rounded-b-lg flex-1">
             <p>
               Amount Due: <strong>{total}.00</strong>
             </p>
             <div className="flex flex-col items-center space-y-3">
-              <button
-                onClick={() => setPaymentMethod("card")}
-                className={`btn-size rounded text-white font-bold ${
-                  paymentMethod === "card"
-                    ? "bg-orange-600"
-                    : "bg-palette-orange hover:bg-orange-500"
-                }`}
-              >
-                Card
-              </button>
-              <button
-                onClick={() => setPaymentMethod("cash")}
-                className={`btn-size rounded text-white font-bold ${
-                  paymentMethod === "cash"
-                    ? "bg-green-700"
-                    : "bg-palette-green hover:bg-green-600"
-                }`}
-              >
-                Cash
-              </button>
-              <button
-                onClick={() => setPaymentMethod("credit")}
-                className={`btn-size rounded text-white font-bold ${
-                  paymentMethod === "credit"
-                    ? "bg-purple-700"
-                    : "bg-palette-purple hover:bg-purple-600"
-                }`}
-              >
-                Credit
-              </button>
+              {["card", "cash", "credit"].map((method) => (
+                <button
+                  key={method}
+                  onClick={() => setPaymentMethod(method)}
+                  className={`btn-size rounded text-white font-bold w-full ${
+                    paymentMethod === method
+                      ? method === "card"
+                        ? "bg-orange-600"
+                        : method === "cash"
+                        ? "bg-green-700"
+                        : "bg-purple-700"
+                      : method === "card"
+                      ? "bg-palette-orange hover:bg-orange-500"
+                      : method === "cash"
+                      ? "bg-palette-green hover:bg-green-600"
+                      : "bg-palette-purple hover:bg-purple-600"
+                  }`}
+                >
+                  {method.charAt(0).toUpperCase() + method.slice(1)}
+                </button>
+              ))}
             </div>
 
             <div className="space-y-2">
@@ -148,50 +141,52 @@ const Billing = () => {
               </div>
             </div>
 
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               <button
-                className="btn-size bg-palette-green rounded text-white font-bold"
+                className="btn-size bg-palette-green rounded text-white font-bold flex-1"
                 onClick={() => setShowPopup(true)}
               >
                 Pay
               </button>
-              <button className="btn-size bg-palette-orange rounded text-white font-bold">Cancel</button>
+              <button className="btn-size bg-palette-orange rounded text-white font-bold flex-1">Cancel</button>
             </div>
           </div>
         </div>
 
         {/* Receipt Print */}
-        <div className="w-1/3 overflow-hidden rounded-lg">
+        <div className="w-full md:w-1/3 overflow-hidden rounded-lg flex flex-col">
           <div className="bg-palette-deepblue text-white p-3 rounded-t-lg">
             <h2 className="text-lg font-semibold">Receipt Print</h2>
           </div>
-          <div className="bg-white p-4 space-y-3 rounded-b-lg text-sm">
+          <div className="bg-white p-4 space-y-3 rounded-b-lg text-sm flex-1">
             <div>
               <p><strong>Keels</strong></p>
               <p>No:09, Attidiya, Ratmalane</p>
               <p>04/04/2025 - 10:31:08 AM</p>
               <p>Bill No: B0097 | Ms. Janudi</p>
             </div>
-            <table className="w-full text-left text-sm mb-3">
-              <thead>
-                <tr>
-                  <th>Item</th>
-                  <th>QTY</th>
-                  <th>Unit Price</th>
-                  <th>Sub Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.name}</td>
-                    <td>{item.qty}</td>
-                    <td>{item.price}.00</td>
-                    <td>{item.qty * item.price}.00</td>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm mb-3">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>QTY</th>
+                    <th>Unit Price</th>
+                    <th>Sub Total</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {cartItems.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>{item.qty}</td>
+                      <td>{item.price}.00</td>
+                      <td>{item.qty * item.price}.00</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             <div className="space-y-1">
               <p>Discount: 0.00</p>
               <p><strong>Grand Total: {total}.00</strong></p>
@@ -200,9 +195,9 @@ const Billing = () => {
               <p>Change Due: {changeDue || "0.00"}</p>
             </div>
             <p className="text-center font-semibold">Thank You For Purchase!</p>
-            <div className="flex gap-3">
-              <button className="btn-size bg-palette-green rounded text-white font-bold">Print</button>
-              <button className="btn-size bg-palette-orange rounded text-white font-bold">Cancel</button>
+            <div className="flex gap-3 flex-wrap">
+              <button className="btn-size bg-palette-green rounded text-white font-bold flex-1">Print</button>
+              <button className="btn-size bg-palette-orange rounded text-white font-bold flex-1">Cancel</button>
             </div>
           </div>
         </div>
@@ -210,8 +205,8 @@ const Billing = () => {
 
       {/* Popup Modal */}
       {showPopup && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white w-[400px] rounded-lg shadow-lg p-6 relative space-y-4 text-center">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative space-y-4 text-center">
             <h2 className="text-xl font-bold text-palette-deepblue mb-2">Payment Details</h2>
             <p className="text-sm mb-4">Amount to Pay: <strong>{total}.00</strong></p>
 
