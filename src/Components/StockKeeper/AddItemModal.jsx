@@ -41,7 +41,7 @@ export default function AddItemModal({ onClose }) {
         {/* Form */}
         <div className="p-6 space-y-3">
           {/*  Inputs */}
-          {["Item ID", "Item Name", "Category", "Unit Price", "Quantity", "Supplier"].map((label) => (
+          {["Item ID", "Item Name", "Category"].map((label) => (
             <div key={label} className="flex items-center gap-4">
               <label className="w-24 text-right">{label} :</label>
               <input className="flex-1 p-2 bg-[#B5C7D6] rounded" />

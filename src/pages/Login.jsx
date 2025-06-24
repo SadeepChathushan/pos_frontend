@@ -34,7 +34,7 @@ export default function Login({ setUserRole }) {
 
   return (
     <div
-      className="relative flex items-center justify-center min-h-screen bg-cover bg-center"
+      className="relative flex items-center justify-center min-h-screen bg-center bg-cover"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
       {/* dark overlay */}
@@ -43,8 +43,8 @@ export default function Login({ setUserRole }) {
       <div className="relative z-10 flex flex-col items-center justify-between w-full max-w-5xl p-6 space-y-8 md:space-y-0 md:flex-row">
         {/* left panel */}
         <div className="flex flex-col items-center text-center md:items-start md:text-left md:w-1/2">
-          <img src={logo} alt="Logo" className="w-64 md:w-80 mb-1" />
-          <h1 className="text-4xl font-serif italic text-white mt-3">
+          <img src={logo} alt="Logo" className="w-64 mb-1 md:w-100" />
+          <h1 className="mt-3 font-serif text-4xl italic text-white">
             WELCOME
             POS SYSTEM
           </h1>
@@ -54,8 +54,8 @@ export default function Login({ setUserRole }) {
         </div>
 
         {/* right panel */}
-        <div className="w-full md:w-1/2 p-8 ">
-          <h2 className="mb-6 text-3xl font-bold text-white text-center">LOGIN</h2>
+        <div className="w-full p-8 md:w-1/2 ">
+          <h2 className="mb-6 text-3xl font-bold text-center text-white">LOGIN</h2>
           <form onSubmit={handleLogin} className="space-y-4">
             
             <div>
@@ -92,7 +92,7 @@ export default function Login({ setUserRole }) {
                   type="checkbox"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  className="mr-2 h-4 w-4 text-teal-500 bg-white rounded"
+                  className="w-4 h-4 mr-2 text-teal-500 bg-white rounded"
                 />
                 Keep me logged in
               </label>
