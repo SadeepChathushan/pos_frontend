@@ -30,25 +30,27 @@ const CustomerHistory = () => {
   const totalVisits = historyData.length.toString().padStart(2, "0");
 
   return (
-    <div className="w-full min-h-screen bg-[#bed0db] p-6 relative">
+    <div className="w-full min-h-screen bg-[#bed0db] px-4 py-6 relative overflow-x-hidden">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
         <h1 className="text-2xl font-bold text-palette-bluegray">Customer History</h1>
         <span className="text-sm text-gray-700">👤 Ms.Lakshi</span>
       </div>
 
       {/* Search */}
-      <div className="flex items-center mb-6 gap-2">
-        <label className="text-lg font-medium whitespace-nowrap mr-2">Customer Name :</label>
-        <div className="flex-1">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center mb-6 gap-2">
+        <label className="text-lg font-medium whitespace-nowrap">Customer Name:</label>
+        <div className="flex flex-1 w-full gap-2">
           <input
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
             placeholder="Type or scan..."
-            className="w-full border p-2 rounded text-sm"
+            className="flex-1 border p-2 rounded text-sm w-full"
           />
+          <button className="bg-palette-orange text-white px-5 py-2 rounded font-semibold">
+            Search
+          </button>
         </div>
-        <button className="bg-palette-orange text-white px-5 py-2 rounded font-semibold ml-2">Search</button>
       </div>
 
       {/* Table */}
@@ -70,7 +72,9 @@ const CustomerHistory = () => {
                 key={index}
                 onClick={() => setSelectedRow(row)}
                 className={`cursor-pointer border-b ${
-                  selectedRow?.billNo === row.billNo ? "bg-yellow-100" : "hover:bg-gray-100"
+                  selectedRow?.billNo === row.billNo
+                    ? "bg-yellow-100"
+                    : "hover:bg-gray-100"
                 }`}
               >
                 <td className="p-2">{row.billNo}</td>
@@ -89,7 +93,7 @@ const CustomerHistory = () => {
       </div>
 
       {/* Summary */}
-      <div className="flex justify-between text-sm mb-3 px-1">
+      <div className="flex justify-between text-sm mb-3 px-1 flex-wrap">
         <span>Total Visits : {totalVisits}</span>
         <span>Total Purchase : {totalPurchase}.00</span>
       </div>
@@ -101,11 +105,11 @@ const CustomerHistory = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex justify-center gap-20 mt-6">
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
         <button
           disabled={!selectedRow}
           onClick={() => setShowViewPopup(true)}
-          className={`w-[150px] py-2 ${
+          className={`w-full sm:w-[150px] py-2 ${
             selectedRow
               ? "bg-blue-500 hover:bg-blue-600"
               : "bg-blue-200 cursor-not-allowed"
@@ -116,7 +120,7 @@ const CustomerHistory = () => {
         <button
           disabled={!selectedRow}
           onClick={() => setShowPrintPopup(true)}
-          className={`w-[150px] py-2 ${
+          className={`w-full sm:w-[150px] py-2 ${
             selectedRow
               ? "bg-purple-500 hover:bg-purple-600"
               : "bg-purple-200 cursor-not-allowed"
@@ -124,15 +128,15 @@ const CustomerHistory = () => {
         >
           Print History
         </button>
-        <button className="w-[150px] py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded">
+        <button className="w-full sm:w-[150px] py-2 bg-green-500 hover:bg-green-600 text-white font-semibold rounded">
           Close
         </button>
       </div>
 
       {/* View Bill Popup */}
       {showViewPopup && selectedRow && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[400px] relative space-y-2">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm relative space-y-2">
             <h2 className="text-xl font-bold text-palette-bluegray mb-4 text-center">
               Bill Details - {selectedRow.billNo}
             </h2>
@@ -153,8 +157,8 @@ const CustomerHistory = () => {
 
       {/* Print History Popup */}
       {showPrintPopup && selectedRow && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-[500px] relative">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
             <h2 className="text-xl font-bold text-center mb-4 text-palette-deepblue">🧾 Print View</h2>
             <div className="space-y-2 text-sm">
               <p><strong>Bill No:</strong> {selectedRow.billNo}</p>
@@ -165,18 +169,17 @@ const CustomerHistory = () => {
               <p><strong>Total Amount:</strong> Rs. {selectedRow.amount}.00</p>
             </div>
             <button
-  onClick={() => window.print()}
-  className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded font-bold mb-2"
->
-  Print Bill
-</button>
-<button
-  onClick={() => setShowPrintPopup(false)}  // ✅ correct
-  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-bold"
->
-  Close
-</button>
-
+              onClick={() => window.print()}
+              className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded font-bold mt-4"
+            >
+              Print Bill
+            </button>
+            <button
+              onClick={() => setShowPrintPopup(false)}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded font-bold mt-2"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
