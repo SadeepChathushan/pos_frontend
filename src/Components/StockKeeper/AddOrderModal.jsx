@@ -3,11 +3,8 @@ import { FiPlus, FiX } from "react-icons/fi";
 
 export default function AddOrderModal({ onClose }) {
   const [success, setSuccess] = useState(false);
-  const [items, setItems] = useState([
-    { item: "", price: "", quantity: "" }, // ✅ added quantity
-  ]);
+  const [items, setItems] = useState([{ item: "", price: "", quantity: "" }]);
 
-  // ESC key support
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === "Escape") onClose();
@@ -25,7 +22,7 @@ export default function AddOrderModal({ onClose }) {
   };
 
   const addItemRow = () => {
-    setItems([...items, { item: "", price: "", quantity: "" }]); // ✅ includes quantity
+    setItems([...items, { item: "", price: "", quantity: "" }]);
   };
 
   const handleItemChange = (index, field, value) => {
@@ -36,7 +33,7 @@ export default function AddOrderModal({ onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-      <div className="relative bg-white w-full max-w-md rounded-lg shadow-lg">
+      <div className="relative bg-white w-full max-w-2xl h-[90vh] rounded-lg shadow-lg flex flex-col overflow-hidden">
         {/* ❌ Close */}
         <button
           onClick={onClose}
@@ -51,8 +48,8 @@ export default function AddOrderModal({ onClose }) {
           Add Order
         </div>
 
-        {/* 📋 Form */}
-        <div className="p-6 space-y-4">
+        {/* 📋 Scrollable Form */}
+        <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           <div>
             <label className="block mb-1 font-medium">Date :</label>
             <input type="date" className="w-full p-2 bg-[#BED0DB] rounded" />
@@ -131,16 +128,16 @@ export default function AddOrderModal({ onClose }) {
               Order submitted successfully!
             </div>
           )}
+        </div>
 
-          {/* ✅ Submit Button */}
-          <div className="text-center mt-6">
-            <button
-              onClick={handleSubmitOrder}
-              className="bg-[#DD9F52] text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition"
-            >
-              Submit Order
-            </button>
-          </div>
+        {/* ✅ Submit Button (Stays Fixed at Bottom) */}
+        <div className="px-6 py-4 border-t bg-white text-center">
+          <button
+            onClick={handleSubmitOrder}
+            className="bg-[#DD9F52] text-white px-6 py-2 rounded-lg hover:bg-orange-500 transition"
+          >
+            Submit Order
+          </button>
         </div>
       </div>
     </div>
