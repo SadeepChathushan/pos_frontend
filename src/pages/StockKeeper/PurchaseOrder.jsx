@@ -7,23 +7,29 @@ import AddItemModal from "../../Components/StockKeeper/AddItemModal";
 import GRNModal from "../../Components/StockKeeper/GRNModal";
 import ViewOrderModal from "../../Components/StockKeeper/ViewOrderModal";
 
-const sampleData = [
+// Initial sample data
+const initialOrders = [
   { id: "P01", date: "2025/03/09", name: "Mr. Jagath", amount: 12000, paid: false },
   { id: "P02", date: "2025/03/09", name: "Mr. Jagath", amount: 12000, paid: true },
 ];
 
 export default function PurchaseOrder() {
   const [query, setQuery] = useState("");
+  const [orders, setOrders] = useState(initialOrders);
   const [showModal, setShowModal] = useState(false);
   const [showAddItemModal, setShowAddItemModal] = useState(false);
   const [showGRNModal, setShowGRNModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const filtered = sampleData.filter(
+  const filtered = orders.filter(
     (po) =>
       po.id.toLowerCase().includes(query.toLowerCase()) ||
       po.name.toLowerCase().includes(query.toLowerCase())
   );
+
+  const handleAddOrder = (newOrder) => {
+    setOrders((prev) => [...prev, newOrder]);
+  };
 
   return (
     <div className="p-4 md:p-6 bg-[#BED0DB] min-h-screen">
@@ -38,7 +44,6 @@ export default function PurchaseOrder() {
 
       {/* Search + Buttons */}
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between mb-4 gap-4">
-        {/* Search box */}
         <div className="relative w-full md:w-2/3">
           <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
@@ -51,7 +56,7 @@ export default function PurchaseOrder() {
           <FiChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
         </div>
 
-        {/* Add Order / Add Item */}
+        {/* Add Order / Add Item Buttons */}
         <div className="flex flex-col md:flex-row md:justify-end items-center space-y-3 md:space-y-0 md:space-x-3 mt-4">
           <button
             onClick={() => setShowModal(true)}
@@ -59,14 +64,21 @@ export default function PurchaseOrder() {
           >
             + Add Order
           </button>
-          {showModal && <AddOrderModal onClose={() => setShowModal(false)} />}
+          {showModal && (
+            <AddOrderModal
+              onClose={() => setShowModal(false)}
+              onSubmit={handleAddOrder} // ✅ Add new order to state
+            />
+          )}
           <button
             onClick={() => setShowAddItemModal(true)}
             className="btn-size w-40 px-4 py-2 bg-[#10A1A3] text-white rounded-lg hover:bg-[#25CB51] transition"
           >
             + Add Item
           </button>
-          {showAddItemModal && <AddItemModal onClose={() => setShowAddItemModal(false)} />}
+          {showAddItemModal && (
+            <AddItemModal onClose={() => setShowAddItemModal(false)} />
+          )}
         </div>
       </div>
 
