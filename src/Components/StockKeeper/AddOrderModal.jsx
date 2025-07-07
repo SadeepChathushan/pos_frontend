@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 
-export default function AddOrderModal({ onClose }) {
+// ✅ Add `onSubmit` to props
+export default function AddOrderModal({ onClose, onSubmit }) {
   const [success, setSuccess] = useState(false);
   const [items, setItems] = useState([{ item: "", price: "", quantity: "" }]);
 
@@ -14,11 +15,24 @@ export default function AddOrderModal({ onClose }) {
   }, [onClose]);
 
   const handleSubmitOrder = () => {
+    const newOrder = {
+      id: `P${Math.floor(Math.random() * 1000).toString().padStart(2, "0")}`,
+      date: new Date().toISOString().split("T")[0],
+      name: "Ms. Lakshi",
+      amount: items.reduce(
+        (sum, i) => sum + (parseFloat(i.price || 0) * parseInt(i.quantity || 0)),
+        0
+      ),
+      paid: false
+    };
+
+    onSubmit(newOrder); // ✅ Call passed function
     setSuccess(true);
+
     setTimeout(() => {
       setSuccess(false);
       onClose();
-    }, 2000);
+    }, 1500);
   };
 
   const addItemRow = () => {
@@ -50,6 +64,7 @@ export default function AddOrderModal({ onClose }) {
 
         {/* 📋 Scrollable Form */}
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+          {/* These inputs are decorative for now */}
           <div>
             <label className="block mb-1 font-medium">Date :</label>
             <input type="date" className="w-full p-2 bg-[#BED0DB] rounded" />
@@ -65,7 +80,7 @@ export default function AddOrderModal({ onClose }) {
             <input type="number" className="w-full p-2 bg-[#BED0DB] rounded" />
           </div>
 
-          {/* Table */}
+          {/* Items Table */}
           <div className="mt-4">
             <div className="grid grid-cols-3 bg-[#1C3F50] text-white font-semibold px-4 py-2 rounded-t">
               <span>Item</span>
@@ -110,7 +125,7 @@ export default function AddOrderModal({ onClose }) {
               </div>
             ))}
 
-            {/* ➕ Add Row Button */}
+            {/* ➕ Add Row */}
             <div className="text-right mt-2">
               <button
                 onClick={addItemRow}
@@ -122,7 +137,7 @@ export default function AddOrderModal({ onClose }) {
             </div>
           </div>
 
-          {/* ✅ Success Message */}
+          {/* ✅ Success */}
           {success && (
             <div className="text-green-600 font-semibold text-center border border-green-300 bg-green-50 p-2 rounded">
               Order submitted successfully!
@@ -130,7 +145,7 @@ export default function AddOrderModal({ onClose }) {
           )}
         </div>
 
-        {/* ✅ Submit Button (Stays Fixed at Bottom) */}
+        {/* ✅ Submit */}
         <div className="px-6 py-4 border-t bg-white text-center">
           <button
             onClick={handleSubmitOrder}
