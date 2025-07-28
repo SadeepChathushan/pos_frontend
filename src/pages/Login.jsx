@@ -1,36 +1,35 @@
-// src/pages/Login.jsx
-
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import bgImage from "../assets/bg_image.jpg";
 import logo from "../assets/logo.png";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function Login({ setUserRole }) {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    try {
+      const role = await login(email, password);
 
-    // Hardcoded users
-    const users = {
-      admin:   { email: "admin@example.com",   password: "admin123"   },
-      cashier: { email: "cashier@example.com", password: "cashier123" },
-      stockkeeper: { email: "stock@example.com", password: "stock123" },
-    };
+      if (role === "ADMIN") navigate("/admin/dashboard");
+      else if (role === "CASHIER") navigate("/cashier/dashboard");
+      else if (role === "STOCKKEEPER") navigate("/stockkeeper/dashboard");
+      else navigate("/login");
 
-    for (const [role, creds] of Object.entries(users)) {
-      if (email === creds.email && password === creds.password) {
-        setUserRole(role);
-        navigate(`/${role}/dashboard`);
-        return;
-      }
+    } catch (err) {
+      console.error("Login error response:", err.response);
+      alert(
+        `Login failed (${err.response?.status}): ` +
+        (err.response?.data?.massage || err.message)
+      );
     }
-
-    alert("Invalid credentials");
   };
+
 
   return (
     <div
