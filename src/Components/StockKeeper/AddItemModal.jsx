@@ -41,7 +41,7 @@ export default function AddItemModal({ onClose }) {
         {/* Form */}
         <div className="p-6 space-y-3">
           {/*  Inputs */}
-          {["Item ID", "Item Name", "Category"].map((label) => (
+          {["Item ID", "Item Name"].map((label) => (
             <div key={label} className="flex items-center gap-4">
               <label className="w-24 text-right">{label} :</label>
               <input className="flex-1 p-2 bg-[#B5C7D6] rounded" />
@@ -51,10 +51,10 @@ export default function AddItemModal({ onClose }) {
           <hr className="my-4" />
 
           {/*  Remark Section */}
-          <div>
+          {/* <div>
             <label className="font-semibold mb-1 block">Remark / Note</label>
             <textarea className="w-full bg-gray-200 h-16 rounded p-2" />
-          </div>
+          </div> */}
 
           <hr className="my-4" />
 

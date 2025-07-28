@@ -75,8 +75,8 @@ const Sidebar = ({ userRole }) => {
                 <NavLink to="/stockkeeper/purchaseorder" icon={<Boxes />} label="Purchase Order" />
                 {/* <NavLink to="/stockkeeper/randomdelivery" icon={<Package />} label="Random delivery" /> */}
                 {/* <NavLink to="/stockkeeper/grn" icon={<ClipboardList />} label="GRN" /> */}
-                <NavLink to="/stockkeeper/inventory" icon={<Boxes />} label="Inventory" />
-                <NavLink to="/stockkeeper/suppliers" icon={<ClipboardCheck />} label="Suppliers" />
+                {/* <NavLink to="/stockkeeper/inventory" icon={<Boxes />} label="Inventory" />
+                <NavLink to="/stockkeeper/suppliers" icon={<ClipboardCheck />} label="Suppliers" /> */}
                 {/* <NavLink to="/stockkeeper/return-expire" icon={<Repeat />} label="Return & Expire" /> */}
               </>
             )}
