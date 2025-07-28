@@ -36,7 +36,7 @@ const Sidebar = ({ userRole }) => {
       {isOpen && (
         <div
           onClick={toggleSidebar}
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
         ></div>
       )}
 
@@ -52,7 +52,7 @@ const Sidebar = ({ userRole }) => {
         </div>
 
         {/* Sidebar Content */}
-        <div className="p-6 flex flex-col justify-between h-full">
+        <div className="flex flex-col justify-between h-full p-6">
           <nav className="space-y-4">
             {userRole === "cashier" && (
               <>
@@ -73,17 +73,17 @@ const Sidebar = ({ userRole }) => {
               <>
                 <NavLink to="/stockkeeper/dashboard" icon={<ClipboardCheck />} label="Dashboard" />
                 <NavLink to="/stockkeeper/purchaseorder" icon={<Boxes />} label="Purchase Order" />
-                <NavLink to="/stockkeeper/randomdelivery" icon={<Package />} label="Random delivery" />
-                <NavLink to="/stockkeeper/grn" icon={<ClipboardList />} label="GRN" />
-                <NavLink to="/stockkeeper/suppliers" icon={<ClipboardCheck />} label="Suppliers" />
+                {/* <NavLink to="/stockkeeper/randomdelivery" icon={<Package />} label="Random delivery" /> */}
+                {/* <NavLink to="/stockkeeper/grn" icon={<ClipboardList />} label="GRN" /> */}
                 <NavLink to="/stockkeeper/inventory" icon={<Boxes />} label="Inventory" />
-                <NavLink to="/stockkeeper/return-expire" icon={<Repeat />} label="Return & Expire" />
+                <NavLink to="/stockkeeper/suppliers" icon={<ClipboardCheck />} label="Suppliers" />
+                {/* <NavLink to="/stockkeeper/return-expire" icon={<Repeat />} label="Return & Expire" /> */}
               </>
             )}
           </nav>
 
           {/* Bottom Section */}
-          <div className="pt-6 mt-6 border-t border-white/30 space-y-4">
+          <div className="pt-6 mt-6 space-y-4 border-t border-white/30">
             <NavLink to="/settings" icon={<Settings />} label="Settings" />
             <NavLink to="/login" icon={<LogOut />} label="Log Out" />
           </div>
