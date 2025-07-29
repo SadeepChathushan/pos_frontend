@@ -173,6 +173,7 @@ const Billing = () => {
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
               >
+                <option value="">-- Select Batch --</option>
                 {selectedItem.batches.map((batch, i) => (
                   <option key={i} value={batch.batchId}>
                     {batch.batchId} - Rs. {batch.price}
