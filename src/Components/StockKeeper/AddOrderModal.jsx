@@ -79,6 +79,15 @@ export default function AddOrderModal({ onClose, onSubmit }) {
             <label className="block mb-1 font-medium">Amount :</label>
             <input type="number" className="w-full p-2 bg-[#BED0DB] rounded" />
           </div>
+          <div>
+            <label className="block mb-1 font-medium">Batch ID(Date) :</label>
+            <input type="Date" className="w-full p-2 bg-[#BED0DB] rounded" />
+          </div>
+          <div>
+            <label className="block mb-1 font-medium">Status :</label>
+            <input type="Boolean" className="w-full p-2 bg-[#BED0DB] rounded" />
+          </div>
+
 
           {/* Items Table */}
           <div className="mt-4">
