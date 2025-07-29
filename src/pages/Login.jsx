@@ -16,7 +16,7 @@ export default function Login({ setUserRole }) {
 
     // Hardcoded users
     const users = {
-      admin:   { email: "admin@example.com",   password: "admin123"   },
+      admin: { email: "admin@example.com", password: "admin123" },
       cashier: { email: "cashier@example.com", password: "cashier123" },
       stockkeeper: { email: "stock@example.com", password: "stock123" },
     };
@@ -24,7 +24,12 @@ export default function Login({ setUserRole }) {
     for (const [role, creds] of Object.entries(users)) {
       if (email === creds.email && password === creds.password) {
         setUserRole(role);
+        if (role === "cashier") {
+          navigate("/cashier/billing");
+          return;
+        }
         navigate(`/${role}/dashboard`);
+
         return;
       }
     }
@@ -45,19 +50,19 @@ export default function Login({ setUserRole }) {
         <div className="flex flex-col items-center text-center md:items-start md:text-left md:w-1/2">
           <img src={logo} alt="Logo" className="w-64 mb-1 md:w-100" />
           <h1 className="mt-3 font-serif text-4xl italic text-white">
-            WELCOME
-            POS SYSTEM
+            WELCOME POS SYSTEM
           </h1>
-           <p className="mt-3 text-lg italic text-gray-300">
-    Empowering Retail, One Transaction at a Time
-  </p>
+          <p className="mt-3 text-lg italic text-gray-300">
+            Empowering Retail, One Transaction at a Time
+          </p>
         </div>
 
         {/* right panel */}
         <div className="w-full p-8 md:w-1/2 ">
-          <h2 className="mb-6 text-3xl font-bold text-center text-white">LOGIN</h2>
+          <h2 className="mb-6 text-3xl font-bold text-center text-white">
+            LOGIN
+          </h2>
           <form onSubmit={handleLogin} className="space-y-4">
-            
             <div>
               <label className="block mb-1 text-sm font-medium text-gray-200">
                 E mail Address
@@ -71,7 +76,6 @@ export default function Login({ setUserRole }) {
               />
             </div>
 
-            
             <div>
               <label className="block mb-1 text-sm font-medium text-gray-200">
                 Password
@@ -85,7 +89,6 @@ export default function Login({ setUserRole }) {
               />
             </div>
 
-            
             <div className="flex items-center justify-between text-sm text-gray-300">
               <label className="flex items-center">
                 <input
@@ -96,12 +99,14 @@ export default function Login({ setUserRole }) {
                 />
                 Keep me logged in
               </label>
-              <Link to="/forgot-password" className="underline hover:text-white">
+              <Link
+                to="/forgot-password"
+                className="underline hover:text-white"
+              >
                 Forget password?
               </Link>
             </div>
 
-            
             <button
               type="submit"
               className="w-full py-2 text-lg font-semibold text-white bg-[#1C3F50] rounded-lg hover:bg-teal-500 transition"
@@ -110,7 +115,6 @@ export default function Login({ setUserRole }) {
             </button>
           </form>
 
-          
           <p className="mt-4 text-center text-gray-300">
             Not registered yet?{" "}
             <Link to="/register" className="underline hover:text-white">

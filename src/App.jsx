@@ -1,7 +1,12 @@
 // src/App.jsx
 
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import AppLayout from "./layouts/AppLayout";
@@ -22,13 +27,18 @@ function App() {
         <Route path="/login" element={<Login setUserRole={setUserRole} />} />
 
         <Route
-          element={<PrivateRoute allowedRoles={["admin", "cashier", "stockkeeper"]} userRole={userRole} />}
+          element={
+            <PrivateRoute
+              allowedRoles={["admin", "cashier", "stockkeeper"]}
+              userRole={userRole}
+            />
+          }
         >
           <Route element={<AppLayout userRole={userRole} />}>
             {/* Routes */}
             <Route path="/admin/*" element={<AdminRoutes />} />
-<Route path="/cashier/*" element={<CashierRoutes />} />
-<Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
+            <Route path="/cashier/*" element={<CashierRoutes />} />
+            <Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
           </Route>
         </Route>
 
