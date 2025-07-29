@@ -24,6 +24,7 @@ const AppLayout = () => {
           <div
             className="absolute inset-0 bg-black opacity-30"
             onClick={() => setSidebarOpen(false)}
+          ></div>
           <div className="relative z-50 bg-[#1C3F50] w-64 h-full">
             <Sidebar userRole={userRole} />
           </div>
