@@ -1,17 +1,115 @@
 import React, { useState } from "react";
 
+const dummyItems = [
+  {
+    id: "itm01",
+    name: "Coca Cola",
+    batches: [
+      { batchId: "B001", price: 100 },
+      { batchId: "B002", price: 105 },
+    ],
+  },
+  {
+    id: "itm02",
+    name: "Biscuit",
+    batches: [{ batchId: "B003", price: 50 }],
+  },
+];
+
 const Billing = () => {
-  const [searchProduct, setSearchProduct] = useState("");
-  const [barcode, setBarcode] = useState("");
-  const [amountInput, setAmountInput] = useState("");
-  const [changeDue, setChangeDue] = useState("");
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
-  const [cartItems] = useState([
-    { name: "Coca Cola", qty: 2, price: 100 },
-    { name: "Biscuit", qty: 1, price: 50 },
-  ]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedBatch, setSelectedBatch] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+
+  const handleItemSelect = (item) => {
+    setSelectedItem(item);
+    setSelectedBatch("");
+    setQuantity("");
+    setSearchTerm(item.name);
+  };
+
+  const addToCart = () => {
+    if (!selectedItem || !selectedBatch || !quantity) return;
+
+    const batch = selectedItem.batches.find((b) => b.batchId === selectedBatch);
+    const existingIndex = cartItems.findIndex(
+      (ci) => ci.name === selectedItem.name && ci.batchId === selectedBatch
+    );
+
+    const updatedCart = [...cartItems];
+
+    if (existingIndex !== -1) {
+      updatedCart[existingIndex].qty += parseInt(quantity);
+    } else {
+      updatedCart.push({
+        name: selectedItem.name,
+        batchId: selectedBatch,
+        qty: parseInt(quantity),
+        price: batch.price,
+      });
+    }
+
+    setCartItems(updatedCart);
+    setQuantity("");
+    setSelectedBatch("");
+    setSelectedItem(null);
+    setSearchTerm("");
+  };
+
+  const removeCartItem = (index) => {
+    const updatedCart = [...cartItems];
+    updatedCart.splice(index, 1);
+    setCartItems(updatedCart);
+  };
+
+  const cancelBilling = () => {
+    setSearchTerm("");
+    setSelectedItem(null);
+    setSelectedBatch("");
+    setQuantity("");
+    setCartItems([]);
+    setPaymentMethod(null);
+    setShowPopup(false);
+  };
+
+  const handlePay = () => {
+    if (cartItems.length === 0) return;
+    setShowPopup(true);
+  };
+
+  const handlePaymentType = (type) => {
+    setPaymentMethod(type);
+    setShowPopup(false);
+
+    const billDetails = {
+      total: total,
+      paymentMethod: type,
+      cartItems: cartItems,
+    };
+
+    console.log("🧾 BILL SUMMARY");
+    console.log("-------------------------------");
+    console.log("🛒 Items:");
+    cartItems.forEach((item, idx) => {
+      console.log(
+        `${idx + 1}. ${item.name} | Batch: ${item.batchId} | Qty: ${
+          item.qty
+        } | Price: ${item.price} | Subtotal: ${item.qty * item.price}`
+      );
+    });
+    console.log("-------------------------------");
+    console.log(`💰 Total: Rs. ${total}.00`);
+    console.log(`💳 Payment Method: ${type.toUpperCase()}`);
+    console.log("-------------------------------");
+
+    // Reset after logging
+    cancelBilling();
+  };
 
   const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
 
@@ -19,185 +117,148 @@ const Billing = () => {
     <div className="w-full h-screen flex flex-col overflow-hidden">
       {/* Top Header Bar */}
       <div className="flex justify-between items-center px-4 py-2 bg-white shadow-sm">
-        <h1 className="text-xl font-bold text-palette-bluegray">Billing</h1>
-        <span className="text-sm text-gray-700 flex items-center gap-1">👤 Ms.Lakshi</span>
+        <span className="text-sm text-gray-700 flex items-center gap-1">
+          👤 Ms.Lakshi
+        </span>
+        <span className="text-sm text-gray-700 flex items-center gap-1">
+          Logout
+        </span>
       </div>
 
       {/* Main Content Panels */}
-      <div className="flex flex-col md:flex-row gap-4 p-4 overflow-auto flex-1">
-        {/* Cashier Terminal */}
-        <div className="w-full md:w-1/3 overflow-hidden rounded-lg flex flex-col">
-          <div className="bg-palette-deepblue text-white p-3 rounded-t-lg">
-            <h2 className="text-lg font-semibold">Cashier Terminal</h2>
-          </div>
-          <div className="bg-white p-4 space-y-3 rounded-b-lg flex-1">
-            <div className="space-y-2">
-              <div>
-                <label className="block text-sm font-medium mb-1">Search Product</label>
-                <input
-                  value={searchProduct}
-                  onChange={(e) => setSearchProduct(e.target.value)}
-                  placeholder="Type or scan..."
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Scan Bar Code</label>
-                <input
-                  value={barcode}
-                  onChange={(e) => setBarcode(e.target.value)}
-                  placeholder="Scan barcode..."
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-            </div>
+      <div className="flex flex-col md:flex-row gap-4 overflow-auto flex-1 px-6 mt-10">
+        <div className="w-full md:w overflow-hidden rounded-lg flex flex-col">
+          <h2 className="font-semibold mb-2">ID or Name</h2>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm mb-3">
-                <thead className="bg-lightblue text-palette-deepblue">
-                  <tr>
-                    <th>Cart Items</th>
-                    <th>QTY</th>
-                    <th>Sub Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item, index) => (
-                    <tr key={index} className="border-t">
-                      <td>{item.name}</td>
-                      <td>{item.qty.toString().padStart(2, "0")}</td>
-                      <td>{item.qty * item.price}.00</td>
-                    </tr>
+          {/* Product Search */}
+          <div className="mb-4 relative">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Type Item ID or Name..."
+              className="w-full border p-2 rounded"
+            />
+            {searchTerm && (
+              <ul className="absolute bg-white border w-full mt-1 max-h-48 overflow-auto z-10">
+                {dummyItems
+                  .filter(
+                    (item) =>
+                      item.name
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                      item.id.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((item, i) => (
+                    <li
+                      key={i}
+                      onClick={() => handleItemSelect(item)}
+                      className="p-2 bg-gray-300 cursor-pointer"
+                    >
+                      {item.name} ({item.id})
+                    </li>
                   ))}
-                </tbody>
-              </table>
-            </div>
-
-            <div className="flex justify-between font-semibold">
-              <span>Total:</span>
-              <span>{total}.00</span>
-            </div>
-            <div className="flex justify-between font-semibold">
-              <span>Discount:</span>
-              <span>0.00</span>
-            </div>
+              </ul>
+            )}
           </div>
-        </div>
 
-        {/* Payment Screen */}
-        <div className="w-full md:w-1/3 overflow-hidden rounded-lg flex flex-col">
-          <div className="bg-palette-deepblue text-white p-3 rounded-t-lg">
-            <h2 className="text-lg font-semibold">Payment Screen</h2>
-          </div>
-          <div className="bg-white p-4 space-y-3 rounded-b-lg flex-1">
-            <p>
-              Amount Due: <strong>{total}.00</strong>
-            </p>
-            <div className="flex flex-col items-center space-y-3">
-              {["card", "cash", "credit"].map((method) => (
-                <button
-                  key={method}
-                  onClick={() => setPaymentMethod(method)}
-                  className={`btn-size rounded text-white font-bold w-full ${
-                    paymentMethod === method
-                      ? method === "card"
-                        ? "bg-orange-600"
-                        : method === "cash"
-                        ? "bg-green-700"
-                        : "bg-purple-700"
-                      : method === "card"
-                      ? "bg-palette-orange hover:bg-orange-500"
-                      : method === "cash"
-                      ? "bg-palette-green hover:bg-green-600"
-                      : "bg-palette-purple hover:bg-purple-600"
-                  }`}
-                >
-                  {method.charAt(0).toUpperCase() + method.slice(1)}
-                </button>
-              ))}
+          {/* Batch Selection */}
+          {selectedItem && (
+            <div className="mb-4">
+              <label className="block font-semibold mb-2 mt-10">
+                Select a batch
+              </label>
+              <select
+                className="w-1/5 border p-2 rounded"
+                value={selectedBatch}
+                onChange={(e) => setSelectedBatch(e.target.value)}
+              >
+                {selectedItem.batches.map((batch, i) => (
+                  <option key={i} value={batch.batchId}>
+                    {batch.batchId} - Rs. {batch.price}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Quantity Input */}
+          {selectedBatch && (
+            <div className="mb-4">
+              <label className="block font-semibold mb-2">Quantity</label>
+              <input
+                type="number"
+                value={quantity}
+                min="1"
+                onChange={(e) => setQuantity(e.target.value)}
+                className="w-full border p-2 rounded"
+                placeholder="Enter quantity"
+              />
+            </div>
+          )}
+
+          {/* Add Button */}
+          {quantity && (
+            <button
+              className="bg-sky-800 text-white px-4 py-2 rounded font-bold"
+              onClick={addToCart}
+            >
+              Add to Cart
+            </button>
+          )}
+
+          {/* Cart Table */}
+          <div className="mt-6">
+            <h3 className="font-semibold mb-2">Cart Items</h3>
+            <table className="w-full border text-left rounded-md">
+              <thead className="bg-sky-800 text-white">
+                <tr>
+                  <th className="p-2">Item</th>
+                  <th className="p-2">Batch</th>
+                  <th className="p-2">QTY</th>
+                  <th className="p-2">Price</th>
+                  <th className="p-2">Sub Total</th>
+                  <th className="p-2">Action</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white">
+                {cartItems.map((item, index) => (
+                  <tr key={index} className="border-t">
+                    <td className="p-2">{item.name}</td>
+                    <td className="p-2">{item.batchId}</td>
+                    <td className="p-2">{item.qty}</td>
+                    <td className="p-2">{item.price}</td>
+                    <td className="p-2">{item.qty * item.price}</td>
+                    <td className="p-2">
+                      <button
+                        onClick={() => removeCartItem(index)}
+                        className="text-red-600 font-bold"
+                      >
+                        ❌
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="text-right mt-4 mr-2 font-bold text-2xl ">
+              Total: Rs. {total}.00
             </div>
 
-            <div className="space-y-2">
-              <div>
-                <label className="block text-sm font-medium mb-1">Enter Amount</label>
-                <input
-                  value={amountInput}
-                  onChange={(e) => setAmountInput(e.target.value)}
-                  placeholder="Enter amount..."
-                  className="w-full border p-2 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Change Due</label>
-                <input
-                  value={changeDue}
-                  onChange={(e) => setChangeDue(e.target.value)}
-                  placeholder="Change due..."
-                  disabled={paymentMethod === "card"}
-                  className={`w-full border p-2 rounded ${
-                    paymentMethod === "card" ? "bg-gray-200 text-gray-500 cursor-not-allowed" : ""
-                  }`}
-                />
-              </div>
-            </div>
-
-            <div className="flex gap-3 flex-wrap">
+            {/* Buttons */}
+            <div className="flex justify-end mt-4 gap-3">
               <button
-                className="btn-size bg-palette-green rounded text-white font-bold flex-1"
-                onClick={() => setShowPopup(true)}
+                className="bg-red-500 text-white px-6 py-2 rounded font-bold"
+                onClick={cancelBilling}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-green-600 text-white px-6 py-2 rounded font-bold"
+                onClick={handlePay}
               >
                 Pay
               </button>
-              <button className="btn-size bg-palette-orange rounded text-white font-bold flex-1">Cancel</button>
-            </div>
-          </div>
-        </div>
-
-        {/* Receipt Print */}
-        <div className="w-full md:w-1/3 overflow-hidden rounded-lg flex flex-col">
-          <div className="bg-palette-deepblue text-white p-3 rounded-t-lg">
-            <h2 className="text-lg font-semibold">Receipt Print</h2>
-          </div>
-          <div className="bg-white p-4 space-y-3 rounded-b-lg text-sm flex-1">
-            <div>
-              <p><strong>Keels</strong></p>
-              <p>No:09, Attidiya, Ratmalane</p>
-              <p>04/04/2025 - 10:31:08 AM</p>
-              <p>Bill No: B0097 | Ms. Janudi</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm mb-3">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>QTY</th>
-                    <th>Unit Price</th>
-                    <th>Sub Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cartItems.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.name}</td>
-                      <td>{item.qty}</td>
-                      <td>{item.price}.00</td>
-                      <td>{item.qty * item.price}.00</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="space-y-1">
-              <p>Discount: 0.00</p>
-              <p><strong>Grand Total: {total}.00</strong></p>
-              <p>Paid Amount: {total}.00</p>
-              <p>Payment Method: {paymentMethod || "-"}</p>
-              <p>Change Due: {changeDue || "0.00"}</p>
-            </div>
-            <p className="text-center font-semibold">Thank You For Purchase!</p>
-            <div className="flex gap-3 flex-wrap">
-              <button className="btn-size bg-palette-green rounded text-white font-bold flex-1">Print</button>
-              <button className="btn-size bg-palette-orange rounded text-white font-bold flex-1">Cancel</button>
             </div>
           </div>
         </div>
@@ -206,35 +267,24 @@ const Billing = () => {
       {/* Popup Modal */}
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative space-y-4 text-center">
-            <h2 className="text-xl font-bold text-palette-deepblue mb-2">Payment Details</h2>
-            <p className="text-sm mb-4">Amount to Pay: <strong>{total}.00</strong></p>
-
-            {paymentMethod === "card" ? (
-              <div className="space-y-2">
-                <p className="text-gray-700 font-medium">💳 Enter Card Details</p>
-                <input className="w-full border p-2 rounded" placeholder="Card Number" />
-                <input className="w-full border p-2 rounded" placeholder="Expiry Date" />
-                <input className="w-full border p-2 rounded" placeholder="CVV" />
-                <button
-                  className="w-full bg-palette-orange text-white font-bold py-2 rounded mt-3"
-                  onClick={() => setShowPopup(false)}
-                >
-                  Pay Now
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <p className="text-green-600 font-semibold text-lg">✅ Payment Successful!</p>
-                <button
-                  className="w-full bg-palette-green text-white font-bold py-2 rounded"
-                  onClick={() => setShowPopup(false)}
-                >
-                  Close
-                </button>
-              </div>
-            )}
-
+          <div className="bg-white w-full max-w-sm rounded-lg shadow-lg p-6 relative space-y-4 text-center">
+            <h2 className="text-xl font-bold text-palette-deepblue mb-2">
+              Select Payment Method
+            </h2>
+            <div className="space-y-2">
+              <button
+                className="w-full bg-green-600 text-white font-bold py-2 rounded"
+                onClick={() => handlePaymentType("cash")}
+              >
+                Pay with Cash
+              </button>
+              <button
+                className="w-full bg-blue-600 text-white font-bold py-2 rounded"
+                onClick={() => handlePaymentType("card")}
+              >
+                Pay with Card
+              </button>
+            </div>
             <button
               className="absolute top-2 right-3 text-gray-500 hover:text-black text-lg"
               onClick={() => setShowPopup(false)}

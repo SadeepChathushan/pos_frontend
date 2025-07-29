@@ -1,18 +1,17 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
-const PrivateRoute = ({ allowedRoles, userRole }) => {
-  // Check if the user role exists and if the role is allowed
-  if (!userRole) {
-    // Redirect to login page if the user is not authenticated
+const PrivateRoute = ({ allowedRoles }) => {
+  const { user } = useAuth();
+  const role = user?.role;
+
+  if (!role) {
     return <Navigate to="/login" replace />;
   }
-
-  if (!allowedRoles.includes(userRole)) {
-    // Redirect to an unauthorized page if the role is not allowed
+  if (!allowedRoles.includes(role)) {
     return <Navigate to="/unauthorized" replace />;
   }
-
-  // If allowed, render the protected route's children
   return <Outlet />;
 };
 
