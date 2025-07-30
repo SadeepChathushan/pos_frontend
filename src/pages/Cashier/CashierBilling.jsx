@@ -1,20 +1,5 @@
-import React, { useState } from "react";
-
-const dummyItems = [
-  {
-    id: "itm01",
-    name: "Coca Cola",
-    batches: [
-      { batchId: "B001", price: 100 },
-      { batchId: "B002", price: 105 },
-    ],
-  },
-  {
-    id: "itm02",
-    name: "Biscuit",
-    batches: [{ batchId: "B003", price: 50 }],
-  },
-];
+import React, { useEffect, useState } from "react";
+import { cashierService } from "../../services/cashierService";
 
 const Billing = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
@@ -25,20 +10,35 @@ const Billing = () => {
   const [selectedBatch, setSelectedBatch] = useState("");
   const [quantity, setQuantity] = useState("");
   const [cartItems, setCartItems] = useState([]);
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    cashierService
+      .getitem()
+      .then((res) => {
+        console.log("Fetched items:", res);
+        setItems(res);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch items", err);
+      });
+  }, []);
 
   const handleItemSelect = (item) => {
     setSelectedItem(item);
     setSelectedBatch("");
     setQuantity("");
-    setSearchTerm(item.name);
+    setSearchTerm(item.itemName);
   };
 
   const addToCart = () => {
     if (!selectedItem || !selectedBatch || !quantity) return;
 
-    const batch = selectedItem.batches.find((b) => b.batchId === selectedBatch);
+    const batch = selectedItem.orders.find((b) => b.batchId === selectedBatch);
+    if (!batch) return;
+
     const existingIndex = cartItems.findIndex(
-      (ci) => ci.name === selectedItem.name && ci.batchId === selectedBatch
+      (ci) => ci.name === selectedItem.itemName && ci.batchId === selectedBatch
     );
 
     const updatedCart = [...cartItems];
@@ -47,10 +47,11 @@ const Billing = () => {
       updatedCart[existingIndex].qty += parseInt(quantity);
     } else {
       updatedCart.push({
-        name: selectedItem.name,
+        name: selectedItem.itemName,
         batchId: selectedBatch,
         qty: parseInt(quantity),
-        price: batch.price,
+        price: batch.sellPrice,
+        remain: parseInt(batch.total) - parseInt(quantity),
       });
     }
 
@@ -77,6 +78,8 @@ const Billing = () => {
     setShowPopup(false);
   };
 
+  const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
+
   const handlePay = () => {
     if (cartItems.length === 0) return;
     setShowPopup(true);
@@ -94,12 +97,11 @@ const Billing = () => {
 
     console.log("🧾 BILL SUMMARY");
     console.log("-------------------------------");
-    console.log("🛒 Items:");
-    cartItems.forEach((item, idx) => {
+    cartItems.forEach((item, i) => {
       console.log(
-        `${idx + 1}. ${item.name} | Batch: ${item.batchId} | Qty: ${
+        `${i + 1}. ${item.name} | Batch: ${item.batchId} | Qty: ${
           item.qty
-        } | Price: ${item.price} | Subtotal: ${item.qty * item.price}`
+        } | Price: ${item.price} | Subtotal: ${item.qty * item.price}|||| ${item.remain} remain`
       );
     });
     console.log("-------------------------------");
@@ -107,15 +109,12 @@ const Billing = () => {
     console.log(`💳 Payment Method: ${type.toUpperCase()}`);
     console.log("-------------------------------");
 
-    // Reset after logging
     cancelBilling();
   };
 
-  const total = cartItems.reduce((sum, item) => sum + item.qty * item.price, 0);
-
   return (
     <div className="w-full h-screen flex flex-col overflow-hidden">
-      {/* Top Header Bar */}
+      {/* Header */}
       <div className="flex justify-between items-center px-4 py-2 bg-white shadow-sm">
         <span className="text-sm text-gray-700 flex items-center gap-1">
           👤 Ms.Lakshi
@@ -125,12 +124,12 @@ const Billing = () => {
         </span>
       </div>
 
-      {/* Main Content Panels */}
+      {/* Main */}
       <div className="flex flex-col md:flex-row gap-4 overflow-auto flex-1 px-6 mt-10">
         <div className="w-full md:w overflow-hidden rounded-lg flex flex-col">
           <h2 className="font-semibold mb-2">ID or Name</h2>
 
-          {/* Product Search */}
+          {/* Search Input */}
           <div className="mb-4 relative">
             <input
               type="text"
@@ -141,42 +140,42 @@ const Billing = () => {
             />
             {searchTerm && (
               <ul className="absolute bg-white border w-full mt-1 max-h-48 overflow-auto z-10">
-                {dummyItems
-                  .filter(
-                    (item) =>
-                      item.name
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ||
-                      item.id.toLowerCase().includes(searchTerm.toLowerCase())
-                  )
+                {items
+                  .filter((item) => {
+                    const term = searchTerm.toLowerCase();
+                    return (
+                      item.itemName.split(" ")[0].toLowerCase().includes(term.toLowerCase()) ||
+                      item.id.toString().includes(term)
+                    );
+                  })
                   .map((item, i) => (
                     <li
                       key={i}
                       onClick={() => handleItemSelect(item)}
-                      className="p-2 bg-gray-300 cursor-pointer"
+                      className="p-2 hover:bg-gray-200 cursor-pointer"
                     >
-                      {item.name} ({item.id})
+                      {item.itemName} <span className="text-xs">(ID:{item.id})</span>
                     </li>
                   ))}
               </ul>
             )}
           </div>
 
-          {/* Batch Selection */}
+          {/* Batch Dropdown */}
           {selectedItem && (
             <div className="mb-4">
               <label className="block font-semibold mb-2 mt-10">
                 Select a batch
               </label>
               <select
-                className="w-1/5 border p-2 rounded"
+                className="w-1/2 border p-2 rounded"
                 value={selectedBatch}
                 onChange={(e) => setSelectedBatch(e.target.value)}
               >
                 <option value="">-- Select Batch --</option>
-                {selectedItem.batches.map((batch, i) => (
+                {selectedItem.orders?.map((batch, i) => (
                   <option key={i} value={batch.batchId}>
-                    {batch.batchId} - Rs. {batch.price}
+                    {batch.batchId} - Rs. {batch.sellPrice} ({batch.total} available)
                   </option>
                 ))}
               </select>
@@ -198,7 +197,7 @@ const Billing = () => {
             </div>
           )}
 
-          {/* Add Button */}
+          {/* Add to Cart */}
           {quantity && (
             <button
               className="bg-sky-800 text-white px-4 py-2 rounded font-bold"
@@ -242,11 +241,11 @@ const Billing = () => {
                 ))}
               </tbody>
             </table>
-            <div className="text-right mt-4 mr-2 font-bold text-2xl ">
+
+            {/* Total + Actions */}
+            <div className="text-right mt-4 mr-2 font-bold text-2xl">
               Total: Rs. {total}.00
             </div>
-
-            {/* Buttons */}
             <div className="flex justify-end mt-4 gap-3">
               <button
                 className="bg-red-500 text-white px-6 py-2 rounded font-bold"
@@ -265,7 +264,7 @@ const Billing = () => {
         </div>
       </div>
 
-      {/* Popup Modal */}
+      {/* Payment Popup */}
       {showPopup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white w-full max-w-sm rounded-lg shadow-lg p-6 relative space-y-4 text-center">
