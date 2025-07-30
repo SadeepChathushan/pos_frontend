@@ -6,14 +6,14 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = sessionStorage.getItem("accessToken");
     if (token) {
       try {
         const { sub: email, role, userId } = jwtDecode(token);
         return { email, role, userId };
       } catch {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        sessionStorage.removeItem("accessToken");
+        sessionStorage.removeItem("refreshToken");
       }
     }
     return null;
@@ -22,8 +22,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     const data = await authService.login(email, password);
     // keep the role exactly as the backend sent it (e.g. "STOCKKEEPER")
-    localStorage.setItem("accessToken", data.token);
-    localStorage.setItem("refreshToken", data.refreshToken);
+    sessionStorage.setItem("accessToken", data.token);
+    sessionStorage.setItem("refreshToken", data.refreshToken);
 
     const { sub } = jwtDecode(data.token);
     setUser({ email: sub, role: data.role, userId: data.userId });
