@@ -4,7 +4,7 @@ import { addItem } from "../../services/StockKeeperServices"; // Import the addI
 
 export default function AddItemModal({ onClose }) {
   const [success, setSuccess] = useState(false);
-  const [itemData, setItemData] = useState({ itemId: "", itemName: "" });
+  const [itemData, setItemData] = useState({ itemName: "" }); // Only itemName is required
   const [error, setError] = useState(""); // To store error messages
 
   // ESC key close
@@ -49,16 +49,14 @@ export default function AddItemModal({ onClose }) {
         {/* Form */}
         <div className="p-6 space-y-3">
           {/* Inputs */}
-          {["Item ID", "Item Name"].map((label) => (
-            <div key={label} className="flex items-center gap-4">
-              <label className="w-24 text-right">{label} :</label>
-              <input
-                className="flex-1 p-2 bg-[#B5C7D6] rounded"
-                value={itemData[label.toLowerCase().replace(" ", "")]}
-                onChange={(e) => setItemData({ ...itemData, [label.toLowerCase().replace(" ", "")]: e.target.value })}
-              />
-            </div>
-          ))}
+          <div className="flex items-center gap-4">
+            <label className="w-24 text-right">Item Name :</label>
+            <input
+              className="flex-1 p-2 bg-[#B5C7D6] rounded"
+              value={itemData.itemName} // Controlled value
+              onChange={(e) => setItemData({ ...itemData, itemName: e.target.value })} // Correctly bind itemName
+            />
+          </div>
 
           <hr className="my-4" />
 
