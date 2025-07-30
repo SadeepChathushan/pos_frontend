@@ -16,6 +16,8 @@ export default function Login() {
     try {
       const role = await login(email, password);
       console.log("Login successful, user role:", role);
+      console.log("USER TOKEN:", sessionStorage.getItem("accessToken"));
+      
 
       if (role === "ADMIN") navigate("/admin/dashboard");
       else if (role === "CASHIER") {

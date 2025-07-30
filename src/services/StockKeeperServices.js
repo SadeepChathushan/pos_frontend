@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_BASE_URL + '/api/v1/stokkeeper/';
 const addItem = async (itemData) => {
   try {
     // Get the token from localStorage (or wherever you're storing it)
-    const token = localStorage.getItem("auth_token");
+    const token =  sessionStorage.getItem("accessToken");
 
     const response = await axios.post(`${API_URL}add-item`, itemData, {
       headers: {
