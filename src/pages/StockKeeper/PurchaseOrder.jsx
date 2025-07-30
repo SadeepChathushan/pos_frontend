@@ -66,38 +66,38 @@ export default function PurchaseOrder() {
   };
 
   return (
-    <div className="p-4 md:p-6 bg-[#BED0DB] min-h-screen">
-      {/* Top Bar */}
-      <div className="flex justify-between items-start md:items-center mb-6">
+    
+<div className="min-h-screen px-6 py-6 md:ml-64 bg-[#BED0DB]">      {/* Top Bar */}
+      <div className="flex items-start justify-between mb-6 md:items-center">
         <h1 className="text-2xl font-semibold text-gray-800">Purchase Orders</h1>
         <div className="flex items-center space-x-2">
           <FiUser className="w-5 h-5 text-gray-700" />
-          <span className="text-gray-700 font-medium">Ms. Lakshi</span>
+          <span className="font-medium text-gray-700">Ms. Lakshi</span>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl shadow p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="p-6 mb-6 bg-white shadow rounded-xl">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
           <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FiSearch className="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
             <input
               type="text"
               placeholder="Search by ID or Name"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-md text-sm focus:outline-none"
+              className="w-full py-2 pl-10 pr-4 text-sm border rounded-md focus:outline-none"
             />
           </div>
-          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="w-full px-4 py-2 border rounded-md text-sm" />
-          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="w-full px-4 py-2 border rounded-md text-sm" />
-          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="w-full px-4 py-2 border rounded-md text-sm text-gray-600">
+          <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="w-full px-4 py-2 text-sm border rounded-md" />
+          <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} className="w-full px-4 py-2 text-sm border rounded-md" />
+          <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} className="w-full px-4 py-2 text-sm text-gray-600 border rounded-md">
             <option value="All">All Statuses</option>
             <option value="Paid">Paid</option>
             <option value="Unpaid">Unpaid</option>
           </select>
-          <input type="number" value={minAmount} onChange={(e) => setMinAmount(e.target.value)} className="w-full px-4 py-2 border rounded-md text-sm" placeholder="Min Amount" />
-          <input type="number" value={maxAmount} onChange={(e) => setMaxAmount(e.target.value)} className="w-full px-4 py-2 border rounded-md text-sm" placeholder="Max Amount" />
+          <input type="number" value={minAmount} onChange={(e) => setMinAmount(e.target.value)} className="w-full px-4 py-2 text-sm border rounded-md" placeholder="Min Amount" />
+          <input type="number" value={maxAmount} onChange={(e) => setMaxAmount(e.target.value)} className="w-full px-4 py-2 text-sm border rounded-md" placeholder="Max Amount" />
         </div>
 
         <div className="flex justify-end mt-6">
@@ -109,19 +109,19 @@ export default function PurchaseOrder() {
 
       {/* Add Order / Add Item */}
       <div className="flex flex-wrap gap-4 mb-6">
-        <button onClick={() => setShowModal(true)} className="w-40 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+        <button onClick={() => setShowModal(true)} className="w-40 px-4 py-2 text-white transition bg-green-600 rounded-lg hover:bg-green-700">
           + Add Order
         </button>
         {showModal && <AddOrderModal onClose={() => setShowModal(false)} onSubmit={handleAddOrder} />}
 
-        <button onClick={() => setShowAddItemModal(true)} className="w-40 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+        <button onClick={() => setShowAddItemModal(true)} className="w-40 px-4 py-2 text-white transition bg-blue-600 rounded-lg hover:bg-blue-700">
           + Add Item
         </button>
         {showAddItemModal && <AddItemModal onClose={() => setShowAddItemModal(false)} />}
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto bg-white rounded-xl shadow-md">
+      <div className="overflow-x-auto bg-white shadow-md rounded-xl">
         <table className="min-w-full">
           <thead>
             <tr className="bg-[#1C3F50] text-white text-left text-sm">
@@ -135,7 +135,7 @@ export default function PurchaseOrder() {
           </thead>
           <tbody>
             {paginated.map((po) => (
-              <tr key={po.id} className="text-sm text-gray-800 border-b hover:bg-gray-50 transition">
+              <tr key={po.id} className="text-sm text-gray-800 transition border-b hover:bg-gray-50">
                 <td className="px-4 py-3">{po.id}</td>
                 <td className="px-4 py-3">{po.date}</td>
                 <td className="px-4 py-3">{po.name}</td>
@@ -147,7 +147,7 @@ export default function PurchaseOrder() {
                   </span>
                 </td>
                 <td className="px-4 py-3">
-                  <button onClick={() => setSelectedOrder(po)} className="px-4 py-1 rounded-full text-white bg-blue-600 hover:bg-blue-700 text-sm">
+                  <button onClick={() => setSelectedOrder(po)} className="px-4 py-1 text-sm text-white bg-blue-600 rounded-full hover:bg-blue-700">
                     View
                   </button>
                   {selectedOrder?.id === po.id && <ViewOrderModal order={selectedOrder} onClose={() => setSelectedOrder(null)} />}
@@ -162,7 +162,7 @@ export default function PurchaseOrder() {
           <button onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))} className={currentPage === 1 ? "text-gray-400 cursor-not-allowed" : "text-blue-600 hover:underline"}>
             Previous
           </button>
-          <span className="px-3 py-1 bg-gray-200 rounded-md text-gray-700">
+          <span className="px-3 py-1 text-gray-700 bg-gray-200 rounded-md">
             Page {currentPage} of {totalPages}
           </span>
           <button onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))} className={currentPage === totalPages ? "text-gray-400 cursor-not-allowed" : "text-blue-600 hover:underline"}>
