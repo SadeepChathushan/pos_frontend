@@ -22,8 +22,14 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/cashier/*" element={<CashierRoutes />} />
-            <Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
+            
           </Route>
+        </Route>
+          <Route element={<PrivateRoute allowedRoles={["STOCKKEEPER"]} />}>
+          
+           
+            <Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
+         
         </Route>
 
         <Route path="*" element={<NotFound />} />
