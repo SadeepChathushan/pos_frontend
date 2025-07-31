@@ -1,6 +1,7 @@
 // src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import AppLayout from "./layouts/AppLayout";
@@ -21,8 +22,14 @@ function App() {
           <Route element={<AppLayout />}>
             <Route path="/admin/*" element={<AdminRoutes />} />
             <Route path="/cashier/*" element={<CashierRoutes />} />
-            <Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
+            
           </Route>
+        </Route>
+          <Route element={<PrivateRoute allowedRoles={["STOCKKEEPER"]} />}>
+          
+           
+            <Route path="/stockkeeper/*" element={<StockKeeperRoutes />} />
+         
         </Route>
 
         <Route path="*" element={<NotFound />} />

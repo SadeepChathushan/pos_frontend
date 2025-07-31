@@ -20,7 +20,9 @@ api.interceptors.request.use((config) => {
   const isPublic = publicPaths.some((path) => config.url?.includes(path));
 
   if (!isPublic && token) {
-    config.headers.Authorization = `Bearer ${token}` ;
+
+    config.headers.Authorization = `Bearer ${token}`;
+
   }
 
   return config;
