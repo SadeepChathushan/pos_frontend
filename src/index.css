@@ -11,3 +11,16 @@
   height: 1.2cm;
 }
 
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print\\:block, .print\\:block * {
+    visibility: visible;
+  }
+  .print\\:block {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
