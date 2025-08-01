@@ -10,7 +10,7 @@ const AppLayout = () => {
   const userRole = user?.role;
 
   return (
-    <div className="flex h-screen relative">
+    <div className="relative flex h-screen">
       {/* Sidebar for desktop */}
       {userRole !== "CASHIER" && (
         <div className="hidden md:block">
@@ -34,7 +34,7 @@ const AppLayout = () => {
       {/* Main content */}
       <div className="flex-1 bg-[#BED0DB] w-full overflow-y-auto">
         {/* Mobile top bar */}
-        <div className="md:hidden flex justify-between items-center mb-4">
+        <div className="flex items-center justify-between mb-4 md:hidden">
           <button onClick={() => setSidebarOpen(true)}>
             <FiMenu className="w-6 h-6 text-gray-800" />
           </button>

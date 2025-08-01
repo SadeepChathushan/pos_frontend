@@ -32,14 +32,7 @@ const Sidebar = ({ userRole }) => (
             <NavLink to="/admin/attendance" icon={<Users />} label="Attendance" />
           </>
         )}
-        {userRole === "STOCKKEEPER" && (
-          <>
-            <NavLink to="/stockkeeper/dashboard" icon={<ClipboardCheck />} label="Dashboard" />
-            <NavLink to="/stockkeeper/purchaseorder" icon={<Boxes />} label="Purchase Order" />
-            {/* add more stockkeeper links here */}
-          </>
-        )}
-      </nav>
+        </nav>
     </div>
 
     <div className="pt-6 space-y-4 border-t border-white/30">
@@ -57,3 +50,12 @@ const NavLink = ({ to, icon, label }) => (
 );
 
 export default Sidebar;
+
+        // {userRole === "STOCKKEEPER" && (
+        //   <>
+        //     <NavLink to="/stockkeeper/dashboard" icon={<ClipboardCheck />} label="Dashboard" />
+        //     <NavLink to="/stockkeeper/purchaseorder" icon={<Boxes />} label="Purchase Order" />
+        //     {/* add more stockkeeper links here */}
+        //   </>
+        // )}
+      
