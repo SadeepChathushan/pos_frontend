@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { cashierService } from "../../services/cashierService";
-import html2pdf from "html2pdf.js";
 
 const Billing = () => {
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-
+  const [showBillPopup, setShowBillPopup] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedBatch, setSelectedBatch] = useState("");
@@ -13,8 +12,6 @@ const Billing = () => {
   const [cartItems, setCartItems] = useState([]);
   const [updateItemsList, setUpdateItemsList] = useState([]);
   const [items, setItems] = useState([]);
-  const [invoiceId, setInvoiceId] = useState(null);
-  const [paidMethod, setPaidMethod] = useState(null);
   const printableRef = useRef();
 
   useEffect(() => {
@@ -92,7 +89,6 @@ const Billing = () => {
     setCartItems([]);
     setUpdateItemsList([]);
     setPaymentMethod(null);
-    setInvoiceId(null);
     setPaidMethod(null);
     setShowPopup(false);
   };
@@ -124,8 +120,8 @@ const Billing = () => {
     setPaymentMethod(type);
     setShowPopup(false);
     const invoice_id = getCompactDateTimeString();
-    setInvoiceId(invoice_id);
-    setPaidMethod(type);
+    setShowBillPopup(true);
+    console.log("--------------111111--", paymentMethod);
 
     const billDetails = {
       saleInvoiceId: invoice_id,
@@ -138,6 +134,29 @@ const Billing = () => {
       fileName: `bill_${invoice_id}.pdf`,
       salesInvoiceId: invoice_id,
     };
+
+    setTimeout(() => {
+      const element = printableRef.current;
+      if (element) {
+        const opt = {
+          margin: 0.1,
+          filename: `bill_${invoice_id}.pdf`,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "in", format: "a5", orientation: "portrait" },
+        };
+
+        window
+          .html2pdf()
+          .set(opt)
+          .from(element)
+          .save()
+          .then(() => {
+            setShowBillPopup(false);
+            cancelBilling();
+          });
+      }
+    }, 500); // Delay ensures div is rendered before printing
 
     cashierService
       .updateItemtotal(updateItemsList)
@@ -185,26 +204,9 @@ const Billing = () => {
     console.log("-------------------------------");
     console.log("updateItemsList", updateItemsList);
     console.log("billDetails", billDetails);
+    console.log("caartItems", cartItems);
     console.log("paymentDetails", paymentDetails);
-
-    setTimeout(() => {
-      const element = printableRef.current;
-      const opt = {
-        margin: 0.5,
-        filename: `invoice_${invoice_id}.pdf`,
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
-      };
-      html2pdf()
-        .set(opt)
-        .from(element)
-        .save()
-        .then(() => {
-          cancelBilling(); // clear after download
-        });
-    }, 500);
-    cancelBilling();
+    // cancelBilling();
   };
 
   return (
@@ -394,65 +396,56 @@ const Billing = () => {
           </div>
         </div>
       )}
-      {/* Printable Bill View */}
-      <div ref={printableRef} className=" print:block bg-white p-6 text-black w-full max-w-md mx-auto">
-        <h2 className="text-xl font-bold text-center mb-2">NRNS COMPANY</h2>
 
-        <div className="text-sm mb-2">
-          <p>
-            <span className="font-semibold">Invoice ID:</span> {invoiceId}
-          </p>
-          <p>
-            <span className="font-semibold">Date:</span>{" "}
-            {new Date().toLocaleString()}
-          </p>
-        </div>
+      {showBillPopup && (
+        <div ref={printableRef} className="bg-white p-6 text-black max-w-md mx-auto">
+        <div
+          ref={printableRef}
+          className="bg-white p-6 text-black max-w-md mx-auto"
+        >
+          <h2 className="text-xl font-bold text-center mb-2">NRNS COMPANY</h2>
+          <div className="text-sm mb-2">
+            <p>
+              <span className="font-semibold">Date:</span>{" "}
+              {new Date().toLocaleString()}
+            </p>
+          </div>
 
-        <table className="w-full text-sm border border-gray-300 mb-2">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border border-gray-300 p-1 text-left">Item</th>
-              <th className="border border-gray-300 p-1 text-left">Batch</th>
-              <th className="border border-gray-300 p-1 text-right">Qty</th>
-              <th className="border border-gray-300 p-1 text-right">Price</th>
-              <th className="border border-gray-300 p-1 text-right">
-                Subtotal
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {cartItems.map((item, index) => (
-              <tr key={index}>
-                <td className="border border-gray-300 p-1">{item.name}</td>
-                <td className="border border-gray-300 p-1">{item.batchId}</td>
-                <td className="border border-gray-300 p-1 text-right">
-                  {item.quantity}
-                </td>
-                <td className="border border-gray-300 p-1 text-right">
-                  Rs. {item.price}
-                </td>
-                <td className="border border-gray-300 p-1 text-right">
-                  Rs. {item.quantity * item.price}
-                </td>
+          <table className="w-full text-xs mb-2">
+            <thead>
+              <tr>
+                <th className="border-l border-gray-300 p-1">Item</th>
+                <th className="border-l border-gray-300 p-1">Batch</th>
+                <th className="border-l border-gray-300 p-1 text-right">Qty</th>
+                <th className="border-l border-gray-300 p-1 text-right">Price</th>
+                <th className="border-l border-gray-300 p-1 text-right">
+                  Subtotal
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {cartItems.map((item, i) => (
+                <tr key={i}>
+                  <td className="p-1">{item.name}</td>
+                  <td className="p-1">{item.batchId}</td>
+                  <td className="p-1 text-right">{item.quantity}</td>
+                  <td className="p-1 text-right">Rs. {item.price}</td>
+                  <td className="p-1 text-right">
+                    Rs. {item.quantity * item.price}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
 
-        <div className="text-sm mt-4 space-y-1">
-          <p>
-            <span className="font-semibold">Total:</span> Rs. {total}.00
+          <p className="font-semibold">Total: Rs. {total}.00</p>
+          <p className="font-semibold">
+            Payment Method: {paymentMethod.toUpperCase()}
           </p>
-          <p>
-            <span className="font-semibold">Payment Method:</span>{" "}
-            {paidMethod?.toUpperCase()}
-          </p>
+          <p className="text-center mt-4">Thank you for your purchase!</p>
         </div>
-
-        <p className="text-center mt-4 font-medium">
-          Thank you for your purchase!
-        </p>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
