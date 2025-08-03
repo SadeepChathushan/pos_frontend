@@ -15,19 +15,13 @@ export default function Login() {
     e.preventDefault();
     try {
       const role = await login(email, password);
-      console.log("Login successful, user role:", role);
-
+      // Redirect based on role
       if (role === "ADMIN") navigate("/admin/dashboard");
-      else if (role === "CASHIER") {
-        navigate("/cashier/billing");
-      } else if (role === "STOCKKEEPER") navigate("/stockkeeper/dashboard");
+      else if (role === "CASHIER") navigate("/cashier/billing");
+      else if (role === "STOCKKEEPER") navigate("/stockkeeper/dashboard");
       else navigate("/login");
     } catch (err) {
-      console.error("Login error response:", err.response);
-      alert(
-        `Login failed (${err.response?.status}): ` +
-          (err.response?.data?.massage || err.message)
-      );
+      alert(`Login failed: ${err.message}`);
     }
   };
 
