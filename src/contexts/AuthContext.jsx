@@ -1,19 +1,19 @@
 import React, { createContext, useState, useContext } from "react";
-import { jwtDecode } from "jwt-decode";            // ← default import
+import {jwtDecode} from "jwt-decode";
 import { authService } from "../services/authService";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  // Initialize user from localStorage token if present
   const [user, setUser] = useState(() => {
-    const token = sessionStorage.getItem("accessToken");
+    const token = localStorage.getItem("access_token");
     if (token) {
       try {
         const { sub: email, role, userId } = jwtDecode(token);
         return { email, role, userId };
       } catch {
-        sessionStorage.removeItem("accessToken");
-        sessionStorage.removeItem("refreshToken");
+        localStorage.removeItem("access_token");
       }
     }
     return null;
@@ -21,10 +21,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const data = await authService.login(email, password);
-    // keep the role exactly as the backend sent it (e.g. "STOCKKEEPER")
-    sessionStorage.setItem("accessToken", data.token);
-    sessionStorage.setItem("refreshToken", data.refreshToken);
-
+    // backend set refreshToken cookie; we store only access token
+    localStorage.setItem("access_token", data.token);
     const { sub } = jwtDecode(data.token);
     setUser({ email: sub, role: data.role, userId: data.userId });
     return data.role;
